@@ -70,7 +70,7 @@ def default_settings():
 
 
 def welcome() -> int: 
-    """Greeting message and choose game modes"""
+    """Greeting message and choose game mode"""
     print("Welcome to Btlshps! Time to play the game!")
     print("Sink all your opponent's ships before they sink yours!")
     while True:
@@ -83,9 +83,9 @@ def welcome() -> int:
             max_val=3
             )
         if choice == 1:
-            default_settings()
+            return 1
         if choice == 2:
-            custom_settings("Mark")
+            return 2
         else:
             print("DEFAULT SETTINGS:")
             print("Grid size: 5 by 5 with 4 ships each")
@@ -96,7 +96,14 @@ def welcome() -> int:
 
 def the_game() -> None:
     """Run the game"""
-    welcome()
+    choice = welcome()
+    if choice == 1:
+        player_grid, computer_grid = default_settings()
+    elif choice == 2:
+        player_grid, computer_grid = custom_settings("mark")
+
+    print(player_grid.print_grid())
+    print(computer_grid.print_grid())
     # board = Battlegrid(10, 4, "Frankie", type)
     # board.board[1][1] = "S"
     # print(board.print_grid())
