@@ -1,5 +1,6 @@
 """Module desc goes here"""
 from random import randint
+import os
 
 
 def read_int(prompt, min_val: int, max_val: int) -> int:
@@ -82,7 +83,7 @@ def generate_random_coordinates(qty: int, size: int) -> []:
     return coordinates
 
 
-def welcome() -> int: 
+def welcome() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps! Time to play the game!")
     print("Sink all your opponent's ships before they sink yours!")
@@ -106,16 +107,19 @@ def welcome() -> int:
         print("CUSTOM MODE: choose your own settings")
 
 
-def the_game() -> None:
+def the_game():
     """Run the game"""
     choice = welcome()
     if choice == 1:
         player_grid, computer_grid = default_settings()
     elif choice == 2:
         player_grid, computer_grid = custom_settings("mark")
-
+    os.system("clear")
     co_ords = generate_random_coordinates(5, 5)
     print(co_ords)
+    print(player_grid.print_grid())
+    print("_" * 30, "\n")
+    print(computer_grid.print_grid())
 
     # print(player_grid.print_grid())
     # print(computer_grid.print_grid())
