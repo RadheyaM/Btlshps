@@ -4,7 +4,8 @@
 
 def read_int(prompt, min_val: int, max_val: int) -> int:
     """prompts player for input and returns a response integer
-    between min and max values"""
+    between min and max values.  All player input will go through
+    this function."""
     while True:
         player_input = input(prompt)
         try:
@@ -15,14 +16,20 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
                 print("The number you entered is too small.  Please try again")
             else:
                 return entry
-        except TypeError:
+        except ValueError:
             print("Ooops, you didn't enter a number dummy!")
             print(f"Please enter a number between {min_val} & {max_val}")
 
 
-class Battlegrid: 
+class Battlegrid:
     """create a battleship board grid"""
-    def __init__(self, size: int, ships: int, player_name: str, type: str):
+    def __init__(
+        self,
+        size: int,
+        ships: int,
+        player_name: str,
+        num_guess: int
+    ):
         self.size = size
         self.board = [["O" for x in range(size)] for y in range(size)]
         self.ships = ships
@@ -30,6 +37,7 @@ class Battlegrid:
         self.type = type
         self.guesses = []
         self.ships = []
+        self.num_guess = num_guess
 
     def print_grid(self):
         """print the grid"""
@@ -37,17 +45,31 @@ class Battlegrid:
             print(" ".join(row))
 
 
-def custom_settings():
+def custom_settings(player_name: str):
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
-    pass
+    grid_size = read_int("Enter grid size between 5 and 20: \n", 5, 20)
+    num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
+    num_guesses = read_int(
+        "Enter number of guesses between 5 and 100: \n",
+        5,
+        100
+    )
+    player_grid = Battlegrid(grid_size, num_ships, player_name, num_guesses)
+    computer_grid = Battlegrid(grid_size, num_ships, player_name, num_guesses)
+    print("-----CUSTOM SETTINGS CHOSEN-----")
+    return player_grid, computer_grid
 
 
 def default_settings():
     """Sets the default game settings"""
+    player_grid = Battlegrid(5, 4, "player", 100)
+    computer_grid = Battlegrid(5, 4, "computer", 100)
+    print("-----DEFAULT SETTINGS CHOSEN-----")
+    return player_grid, computer_grid
 
 
-def welcome() -> int:
+def welcome() -> int: 
     """Greeting message and choose game modes"""
     print("Welcome to Btlshps! Time to play the game!")
     print("Sink all your opponent's ships before they sink yours!")
@@ -63,12 +85,13 @@ def welcome() -> int:
         if choice == 1:
             default_settings()
         if choice == 2:
-            custom_settings()
-        print("DEFAULT SETTINGS:")
-        print("Grid size: 5 by 5 with 4 ships each")
-        print("Unlimited Guesses")
-        print("Winner is first to hit all opponents ships!")
-        print("CUSTOM MODE: choose your own settings")
+            custom_settings("Mark")
+        else:
+            print("DEFAULT SETTINGS:")
+            print("Grid size: 5 by 5 with 4 ships each")
+            print("Unlimited Guesses")
+            print("Winner is first to hit all opponents ships!")
+            print("CUSTOM MODE: choose your own settings")
 
 
 def the_game() -> None:
