@@ -2,7 +2,7 @@
 # from random import randint
 
 
-def read_int(prompt, min_val, max_val):
+def read_int(prompt, min_val: int, max_val: int):
     """prompts player for input and ensures a response of an integer
     between min and max values"""
     while True:
@@ -36,7 +36,19 @@ class Battlegrid:
             print(" ".join(row))
 
 
-# def time_to_play_the_game():
-#     print("Welcome to Btlshps!  Time to play the game!")
+def welcome():
+    print("Welcome to Btlshps! Time to play the game!")
+    print("The object of the game is to sink all your opponents ships before they sink your's!")
+    print("Enter 1 for default game mode")
+    print("Enter 2 for custom game mode ")
+    read_int("Would you like to play default or custom mode?\n", min_val=1, max_val=2)
 
 
+def custom_choice()
+    pass
+
+
+def the_game() -> None:
+    welcome()
+
+the_game()
