@@ -1,5 +1,5 @@
 """Module desc goes here"""
-# from random import randint
+from random import randint
 
 
 def read_int(prompt, min_val: int, max_val: int) -> int:
@@ -69,6 +69,19 @@ def default_settings():
     return player_grid, computer_grid
 
 
+def generate_random_coordinates(qty: int, size: int) -> []:
+    """generate a list of random co-ordinates for populating grids and
+    so the computer can make guesses"""
+    coordinates = []
+    loops = 0
+    while loops < qty:
+        row = randint(0, size - 1)
+        col = randint(0, size - 1)
+        loops += 1
+        coordinates.append((row, col))
+    return coordinates
+
+
 def welcome() -> int: 
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps! Time to play the game!")
@@ -86,12 +99,11 @@ def welcome() -> int:
             return 1
         if choice == 2:
             return 2
-        else:
-            print("DEFAULT SETTINGS:")
-            print("Grid size: 5 by 5 with 4 ships each")
-            print("Unlimited Guesses")
-            print("Winner is first to hit all opponents ships!")
-            print("CUSTOM MODE: choose your own settings")
+        print("DEFAULT SETTINGS:")
+        print("Grid size: 5 by 5 with 4 ships each")
+        print("Unlimited Guesses")
+        print("Winner is first to hit all opponents ships!")
+        print("CUSTOM MODE: choose your own settings")
 
 
 def the_game() -> None:
@@ -102,8 +114,11 @@ def the_game() -> None:
     elif choice == 2:
         player_grid, computer_grid = custom_settings("mark")
 
-    print(player_grid.print_grid())
-    print(computer_grid.print_grid())
+    co_ords = generate_random_coordinates(5, 5)
+    print(co_ords)
+
+    # print(player_grid.print_grid())
+    # print(computer_grid.print_grid())
     # board = Battlegrid(10, 4, "Frankie", type)
     # board.board[1][1] = "S"
     # print(board.print_grid())
