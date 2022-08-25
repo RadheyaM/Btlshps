@@ -18,7 +18,7 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
         except TypeError:
             print("Ooops, you didn't enter a number dummy!")
             print(f"Please enter a number between {min_val} & {max_val}")
- 
+
 
 class Battlegrid: 
     """create a battleship board grid"""
@@ -37,42 +37,46 @@ class Battlegrid:
             print(" ".join(row))
 
 
-def welcome() -> int:
-    """Greeting message and choose game modes"""
-    print("Welcome to Btlshps! Time to play the game!")
-    print("Sink all your opponent's ships before they sink yours!")
-    print("Enter 1 for default game mode")
-    print("Enter 2 for custom game mode ")
-    print("Enter 3 for explanation of game modes")
-    choice = read_int(
-        "Would you like to play default or custom mode?\n",
-        min_val=1,
-        max_val=3
-        )
-    if choice == 1:
-        return 1
-    elif choice == 2:
-        return 2
-    else:
-        return 3
-
-
 def custom_settings():
     """Allows the player to set the size of the board,
-    the number of guess, and win conditions"""
+    the number of guesses, and win conditions"""
     pass
 
 
 def default_settings():
     """Sets the default game settings"""
-    size = 6
-    ships = 5
-    player_name = player_name
-    computer = Battlegrid(size, ships, player_name, type)
+
+
+def welcome() -> int:
+    """Greeting message and choose game modes"""
+    print("Welcome to Btlshps! Time to play the game!")
+    print("Sink all your opponent's ships before they sink yours!")
+    while True:
+        print("Enter 1 for default game mode")
+        print("Enter 2 for custom game mode ")
+        print("Enter 3 for explanation of game modes\n")
+        choice = read_int(
+            "Would you like to play default or custom mode?\n",
+            min_val=1,
+            max_val=3
+            )
+        if choice == 1:
+            default_settings()
+        if choice == 2:
+            custom_settings()
+        print("DEFAULT SETTINGS:")
+        print("Grid size: 5 by 5 with 4 ships each")
+        print("Unlimited Guesses")
+        print("Winner is first to hit all opponents ships!")
+        print("CUSTOM MODE: choose your own settings")
 
 
 def the_game() -> None:
+    """Run the game"""
     welcome()
+    # board = Battlegrid(10, 4, "Frankie", type)
+    # board.board[1][1] = "S"
+    # print(board.print_grid())
 
 
 the_game()
