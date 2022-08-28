@@ -37,7 +37,7 @@ class Battlegrid:
         self.player_name = player_name
         self.type = type
         self.guesses = []
-        self.ships = []
+        self.ship_locations = []
         self.num_guess = num_guess
 
     def print_grid(self):
@@ -83,6 +83,13 @@ def generate_random_coordinates(qty: int, size: int) -> []:
     return coordinates
 
 
+def make_guess(size: int, grid):
+    """Prompts player to enter guesses and saves to instance guesses list"""
+    row_guess = read_int("Guess a row: ", 0, size - 1)
+    col_guess = read_int("Guess a column: ", 0, size - 1)
+    grid.guesses.append((row_guess, col_guess))
+
+
 def welcome() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps! Time to play the game!")
@@ -116,16 +123,16 @@ def the_game():
         player_grid, computer_grid = custom_settings("mark")
     os.system("clear")
     co_ords = generate_random_coordinates(5, 5)
-    print(co_ords)
+    co_ords2 = generate_random_coordinates(5, 5)
+    for tup in co_ords:
+        print(tup)
+        player_grid.ship_locations.append(tup)
+    for tup in co_ords2:
+        computer_grid.ship_locations.append(tup)
+
     print(player_grid.print_grid())
     print("_" * 30, "\n")
     print(computer_grid.print_grid())
-
-    # print(player_grid.print_grid())
-    # print(computer_grid.print_grid())
-    # board = Battlegrid(10, 4, "Frankie", type)
-    # board.board[1][1] = "S"
-    # print(board.print_grid())
 
 
 the_game()
