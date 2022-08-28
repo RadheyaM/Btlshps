@@ -3,7 +3,7 @@ from random import randint
 import os
 
 
-def read_int(prompt, min_val: int, max_val: int) -> int:
+def read_int(prompt, min_val, max_val):
     """prompts player for input and returns a response integer
     between min and max values.  All player input will go through
     this function."""
@@ -45,6 +45,32 @@ class Battlegrid:
         for row in self.board:
             print(" ".join(row))
 
+    def generate_ships(self):
+        """generate a list of random co-ordinates stored in the ship_locations
+        class array"""
+        loops = 0
+        while loops < self.ships:
+            row = randint(0, self.size - 1)
+            col = randint(0, self.size - 1)
+            loops += 1
+            self.ship_locations.append((row, col))
+
+    def display_ships(self):
+        """Display an S for every ship co-ordinate in the ship_locations
+        array on the printed board"""
+        for ship in self.ship_locations:
+            self.board[ship[0]][ship[1]] = "S"
+
+    def display_guess(self):
+        """Display appropriate symbol on the board depending on if
+        guess is a hit or miss"""
+        for guess in self.guesses:
+            for ship in self.ship_locations:
+                if ship == guess:
+                    self.board[ship[0]][ship[1]] = "H"
+                    return
+                self.board[guess[0]][guess[1]] = "M"
+
 
 def custom_settings(player_name: str):
     """Allows the player to set the size of the board,
@@ -68,19 +94,6 @@ def default_settings():
     computer_grid = Battlegrid(5, 4, "computer", 100)
     print("-----DEFAULT SETTINGS CHOSEN-----")
     return player_grid, computer_grid
-
-
-def generate_random_coordinates(qty: int, size: int) -> []:
-    """generate a list of random co-ordinates for populating grids and
-    so the computer can make guesses"""
-    coordinates = []
-    loops = 0
-    while loops < qty:
-        row = randint(0, size - 1)
-        col = randint(0, size - 1)
-        loops += 1
-        coordinates.append((row, col))
-    return coordinates
 
 
 def make_guess(size: int, grid):
@@ -122,17 +135,14 @@ def the_game():
     elif choice == 2:
         player_grid, computer_grid = custom_settings("mark")
     os.system("clear")
-    co_ords = generate_random_coordinates(5, 5)
-    co_ords2 = generate_random_coordinates(5, 5)
-    for tup in co_ords:
-        print(tup)
-        player_grid.ship_locations.append(tup)
-    for tup in co_ords2:
-        computer_grid.ship_locations.append(tup)
 
-    print(player_grid.print_grid())
-    print("_" * 30, "\n")
+    player_grid.generate_ships()
+    player_grid.display_ships()
+    make_guess(5, player_grid)
+
     print(computer_grid.print_grid())
+    print("_" * 30, "\n")
+    print(player_grid.print_grid())
 
 
 the_game()
