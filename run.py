@@ -25,6 +25,7 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
 def print_screen(player_grid, computer_grid):
     """Prints the game to terminal"""
     print(computer_grid.print_grid())
+    player_grid.display_ships()
     print("_" * 30, "\n")
     print(player_grid.print_grid())
 
@@ -39,7 +40,7 @@ class Battlegrid:
         guesses_allowed: int
     ):
         self.size = size
-        self.board = [["O" for x in range(size)] for y in range(size)]
+        self.board = [["_" for x in range(size)] for y in range(size)]
         self.ships = ships
         self.player_name = player_name
         self.type = type
@@ -84,10 +85,15 @@ class Battlegrid:
             for ship in self.ship_locations:
                 if ship == guess:
                     self.board[ship[0]][ship[1]] = "H"
-                    return
                 self.board[guess[0]][guess[1]] = "M"
 
+    def outcome_message(self):
+        """Generates turn feedback message"""
+        if self.guesses[-1] == self.ship_locations[-1]:
+            return print("Hit!!!")
+        return print("That's a miss!")
 
+     
 def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
@@ -158,14 +164,16 @@ def game_turn(player_grid, computer_grid):
     player_grid.display_guess()
     # computer_grid.generate_guess()
     computer_grid.display_guess()
-
+    
+    os.system("clear")
+    computer_grid.outcome_message()
     print_screen(player_grid, computer_grid)
 
     # computer guesses
-    os.system("clear")
-    print(f"The computer guesses: {computer_grid.guesses[-1]}")
-    player_grid.display_guess()
-    print_screen(player_grid, computer_grid)
+    # os.system("clear")
+    # print(f"The computer guesses: {computer_grid.guesses[-1]}")
+    # player_grid.display_guess()
+    # print_screen(player_grid, computer_grid)
 
 
 def the_game():
