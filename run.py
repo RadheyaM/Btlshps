@@ -22,6 +22,12 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
             print(f"Please enter a number between {min_val} & {max_val}")
 
 
+def print_screen(player_grid, computer_grid):
+    print(computer_grid.print_grid())
+    print("_" * 30, "\n")
+    print(player_grid.print_grid())
+
+
 class Battlegrid:
     """create a battleship board grid"""
     def __init__(
@@ -46,7 +52,7 @@ class Battlegrid:
         for row in self.board:
             print(" ".join(row))
 
-    def generate_coordinates(self):
+    def generate_ships(self):
         """generate a list of random co-ordinates stored to
         ship_locations and used to generate ships on the board"""
         loops = 0
@@ -55,8 +61,8 @@ class Battlegrid:
             col = randint(0, self.size - 1)
             loops += 1
             self.ship_locations.append((row, col))
-    
-    def generate_guesses(self):
+
+    def generate_guess(self):
         """Generates and saves guess co-ordinates to the Battlegrid
         instance guesses array"""
         row = randint(0, self.size - 1)
@@ -93,7 +99,9 @@ def custom_settings():
     )
     player_grid = Battlegrid(grid_size, num_ships, "Player1", num_guess)
     computer_grid = Battlegrid(grid_size, num_ships, "Computer", num_guess)
+    os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
+    print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
 
 
@@ -101,7 +109,9 @@ def default_settings():
     """Sets the default game settings"""
     player_grid = Battlegrid(5, 4, "player", 100)
     computer_grid = Battlegrid(5, 4, "computer", 100)
+    os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
+    print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
 
 
@@ -112,14 +122,11 @@ def make_guess_player(player_grid):
     player_grid.guesses.append((row_guess, col_guess))
 
 
-def make_guess_computer(computer_grid):
-    """Computer makes a random guess"""
-
-
 def welcome() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps! Time to play the game!")
     print("Sink all your opponent's ships before they sink yours!")
+    print("To quit just refresh page at any time.")
     while True:
         print("Enter 1 for default game mode")
         print("Enter 2 for custom game mode ")
@@ -140,18 +147,30 @@ def welcome() -> int:
         print("CUSTOM MODE: choose your own settings")
 
 
+def game_turn(player_grid, computer_grid):
+    """Run a single turn of a game"""
+    # guesses
+    make_guess_player(player_grid)
+    computer_grid.generate_guess()
+
+    # display guesses
+    player_grid.display_guess()
+    computer_grid.display_guess()
+
+    os.system("clear")
+    print_screen(player_grid, computer_grid)
+
+
 def the_game():
-    """Run the game""" 
+    """Run the game"""
+    # the player gets to choose settings
     choice = welcome()
     if choice == 1:
         player_grid, computer_grid = default_settings()
     elif choice == 2:
         player_grid, computer_grid = custom_settings()
-    os.system("clear")
 
-    print(computer_grid.print_grid())
-    print("_" * 30, "\n")
-    print(player_grid.print_grid())
+    game_turn(player_grid, computer_grid)
 
 
 the_game()
