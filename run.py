@@ -29,7 +29,7 @@ class Battlegrid:
         size: int,
         ships: int,
         player_name: str,
-        num_guess: int
+        guesses_allowed: int
     ):
         self.size = size
         self.board = [["O" for x in range(size)] for y in range(size)]
@@ -38,22 +38,31 @@ class Battlegrid:
         self.type = type
         self.guesses = []
         self.ship_locations = []
-        self.num_guess = num_guess
+        self.guesses_allowed = guesses_allowed
+        self.guesses_made = 0
 
     def print_grid(self):
         """print the grid"""
         for row in self.board:
             print(" ".join(row))
 
-    def generate_coordinates(self, limit, array):
-        """generate a list of random co-ordinates stored either to
-        ship_locations or guesses depending on use case"""
+    def generate_coordinates(self):
+        """generate a list of random co-ordinates stored to
+        ship_locations and used to generate ships on the board"""
         loops = 0
-        while loops < self.limit:
+        while loops < self.ships:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
             loops += 1
-            self.array.append((row, col))
+            self.ship_locations.append((row, col))
+    
+    def generate_guesses(self):
+        """Generates and saves guess co-ordinates to the Battlegrid
+        instance guesses array"""
+        row = randint(0, self.size - 1)
+        col = randint(0, self.size - 1)
+        self.guesses.append((row, col))
+        self.guesses_made += 1
 
     def display_ships(self):
         """Display an S for every ship co-ordinate in the ship_locations
