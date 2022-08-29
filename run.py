@@ -158,21 +158,26 @@ def welcome() -> int:
 def game_turn(player_grid, computer_grid):
     """Run a single turn of the game"""
     os.system("clear")
-    player_grid.display_ships()
-    # guesses
     print_screen(player_grid, computer_grid)
-    make_guess_player(player_grid)
-    computer_grid.generate_guess()
+    guesses_allowed = player_grid.guesses_allowed
+    new_turn = True
+    while new_turn:
+        player_grid.display_ships()
+        # guesses
+        make_guess_player(computer_grid)
+        player_grid.generate_guess()
 
-    # display guesses
-    player_grid.display_guess()
-    computer_grid.display_guess()
-    
-    os.system("clear")
-    computer_grid.outcome_message()
-    print(f"The Computer guessed {computer_grid.guesses[-1]}")
-    player_grid.outcome_message()
-    print_screen(player_grid, computer_grid)
+        # display guesses
+        player_grid.display_guess()
+        computer_grid.display_guess()
+   
+        os.system("clear")
+        computer_grid.outcome_message()
+        print(f"The Computer guessed {computer_grid.guesses[-1]}")
+        player_grid.outcome_message()
+        print_screen(player_grid, computer_grid)
+        print(player_grid.guesses)
+        print(computer_grid.guesses)
 
 
 def the_game():
