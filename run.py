@@ -22,12 +22,14 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
             print(f"Please enter a number between {min_val} & {max_val}")
 
 
-def print_screen(player_grid, computer_grid):
+def print_screen(plr, com):
     """Prints the game to terminal"""
-    print(computer_grid.print_grid())
-    player_grid.display_ships()
+    print("-------COMPUTER'S BOARD-------")
+    com.print_grid()
+    plr.display_ships()
     print("_" * 30, "\n")
-    print(player_grid.print_grid())
+    print("----------YOUR BOARD----------")
+    plr.print_grid()
 
 
 class Battlegrid:
@@ -169,17 +171,16 @@ def game_turn(player_grid, computer_grid):
         make_guess_player(com)
         plr.generate_guess()
 
-        # display guesses
+
+        os.system("clear")
         plr.display_guess()
         com.display_guess()
-  
-        os.system("clear")
         com.outcome_message()
-        print(f"The Computer guessed {com.guesses[-1]}")
-        p.outcome_message()
+        print(f"The Computer guessed {plr.guesses[-1]}")
+        plr.outcome_message()
         print_screen(plr, com)
-        print(plr.guesses)
-        print(com.guesses)
+        print(com.ship_locations)
+        print(plr.ship_locations)
 
 
 def the_game():
@@ -187,14 +188,14 @@ def the_game():
     # the player gets to choose settings
     choice = welcome()
     if choice == 1:
-        player_grid, computer_grid = default_settings()
+        plr, com = default_settings()
     elif choice == 2:
-        player_grid, computer_grid = custom_settings()
+        plr, com = custom_settings()
 
-    player_grid.generate_ships()
-    computer_grid.generate_ships()
+    plr.generate_ships()
+    com.generate_ships()
 
-    game_turn(player_grid, computer_grid)
+    game_turn(plr, com)
 
 
 the_game()
