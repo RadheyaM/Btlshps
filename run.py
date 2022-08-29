@@ -25,10 +25,11 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
 def print_screen(plr, com):
     """Prints the game to terminal"""
     print("-------COMPUTER'S BOARD-------")
+    com.display_ships()
     com.print_grid()
-    plr.display_ships()
     print("_" * 30, "\n", "\n")
     print("----------YOUR BOARD----------")
+    plr.display_ships()
     plr.print_grid()
 
 
@@ -38,7 +39,7 @@ class Battlegrid:
         self,
         grid_size: int,
         num_of_ships: int,
-        turn_message: str,
+        guess_id: str,
         guesses_allowed: int,
     ):
         self.size = grid_size
@@ -46,7 +47,7 @@ class Battlegrid:
             ["_" for rows in range(grid_size)] for cols in range(grid_size)
         ]
         self.ships = num_of_ships
-        self.message = turn_message
+        self.guess_id = guess_id
         self.guesses = []
         self.ship_locations = []
         self.guesses_allowed = guesses_allowed
@@ -123,8 +124,8 @@ def display_guess(guessing, target):
 def outcome_message(guessing, target):
     """Generates turn feedback message"""
     if guessing.guesses[-1] == target.ship_locations[-1]:
-        return print(f"{guessing.message} hit a ship!")
-    return print(f"{guessing.message} missed!")
+        return print(f"{guessing.guess_id} hit a ship!")
+    return print(f"{guessing.guess_id} missed!")
 
 
 def make_guess_player(player_grid):
@@ -159,13 +160,17 @@ def welcome() -> int:
         print("CUSTOM MODE: choose your own settings")
 
 
-def game_turn(player_grid, computer_grid):
+def game_loop(plr, com):
     """Run the game loop"""
-   
 
-def the_game():
-    """Run the game"""
-    # the player gets to choose settings
+    os.system("clear")
+    print_screen(plr, com)
+    print(plr.ship_locations)
+    print(com.ship_locations)
+
+
+def main():
+    """start the game and apply settings"""
     choice = welcome()
     if choice == 1:
         plr, com = default_settings()
@@ -175,7 +180,7 @@ def the_game():
     plr.generate_ships()
     com.generate_ships()
 
-    game_turn(plr, com)
+    game_loop(plr, com)
 
 
-the_game()
+main()
