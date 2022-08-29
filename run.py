@@ -94,7 +94,7 @@ class Battlegrid:
             return print(f"{self.message} hit a ship!")
         return print(f"{self.message} missed!")
 
-     
+
 def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
@@ -166,11 +166,12 @@ def game_turn(player_grid, computer_grid):
 
     # display guesses
     player_grid.display_guess()
-    # computer_grid.generate_guess()
     computer_grid.display_guess()
     
     os.system("clear")
     computer_grid.outcome_message()
+    print(f"The Computer guessed {computer_grid.guesses[-1]}")
+    player_grid.outcome_message()
     print_screen(player_grid, computer_grid)
 
 
