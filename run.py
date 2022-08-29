@@ -63,6 +63,7 @@ class Battlegrid:
             col = randint(0, self.size - 1)
             loops += 1
             self.ship_locations.append((row, col))
+        print(self.ship_locations)
 
     def generate_guess(self):
         """Generates and saves computer guess co-ordinates to the Battlegrid
@@ -156,9 +157,9 @@ def welcome() -> int:
 
 def game_turn(player_grid, computer_grid):
     """Run a single turn of the game"""
+    os.system("clear")
     player_grid.display_ships()
     # guesses
-    os.system("clear")
     print_screen(player_grid, computer_grid)
     make_guess_player(player_grid)
     computer_grid.generate_guess()
@@ -168,15 +169,9 @@ def game_turn(player_grid, computer_grid):
     # computer_grid.generate_guess()
     computer_grid.display_guess()
     
-    computer_grid.outcome_message()
     os.system("clear")
+    computer_grid.outcome_message()
     print_screen(player_grid, computer_grid)
-
-    # computer guesses
-    # os.system("clear")
-    # print(f"The computer guesses: {computer_grid.guesses[-1]}")
-    # player_grid.display_guess()
-    # print_screen(player_grid, computer_grid)
 
 
 def the_game():
