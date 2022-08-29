@@ -81,9 +81,7 @@ class Battlegrid:
         """Display appropriate symbol on the board depending on if
         guess is a hit or miss"""
         for guess in self.guesses:
-            print(f"guess: {guess}")
             for ship in self.ship_locations:
-                print(f"ship: {ship}")
                 if ship == guess:
                     self.board[ship[0]][ship[1]] = "H"
                     return
@@ -154,13 +152,19 @@ def game_turn(player_grid, computer_grid):
     """Run a single turn of the game"""
     # guesses
     make_guess_player(player_grid)
-    # computer_grid.generate_guess()
+    computer_grid.generate_guess()
 
     # display guesses
     player_grid.display_guess()
     # computer_grid.generate_guess()
     computer_grid.display_guess()
 
+    print_screen(player_grid, computer_grid)
+
+    # computer guesses
+    os.system("clear")
+    print(f"The computer guesses: {computer_grid.guesses[-1]}")
+    player_grid.display_guess()
     print_screen(player_grid, computer_grid)
 
 
