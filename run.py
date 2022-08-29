@@ -27,7 +27,7 @@ def print_screen(plr, com):
     print("-------COMPUTER'S BOARD-------")
     com.print_grid()
     plr.display_ships()
-    print("_" * 30, "\n")
+    print("_" * 30, "\n", "\n")
     print("----------YOUR BOARD----------")
     plr.print_grid()
 
@@ -66,7 +66,6 @@ class Battlegrid:
             col = randint(0, self.size - 1)
             loops += 1
             self.ship_locations.append((row, col))
-        print(self.ship_locations)
 
     def generate_guess(self):
         """Generates and saves computer guess co-ordinates to the Battlegrid
@@ -81,12 +80,6 @@ class Battlegrid:
         array on the printed board"""
         for ship in self.ship_locations:
             self.board[ship[0]][ship[1]] = "S"
-
-    def outcome_message(self):
-        """Generates turn feedback message"""
-        if self.guesses[-1] == self.ship_locations[-1]:
-            return print(f"{self.message} hit a ship!")
-        return print(f"{self.message} missed!")
 
 
 def custom_settings():
@@ -127,6 +120,13 @@ def display_guess(guessing, target):
             target.board[guess[0]][guess[1]] = "M"
 
 
+def outcome_message(guessing, target):
+    """Generates turn feedback message"""
+    if guessing.guesses[-1] == target.ship_locations[-1]:
+        return print(f"{guessing.message} hit a ship!")
+    return print(f"{guessing.message} missed!")
+
+
 def make_guess_player(player_grid):
     """Prompts player to enter guesses and saves to instance guesses list"""
     row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
@@ -160,31 +160,8 @@ def welcome() -> int:
 
 
 def game_turn(player_grid, computer_grid):
-    """Run a single turn of the game"""
-    plr = player_grid
-    com = computer_grid
-    guesses_allowed = plr.guesses_allowed
-    new_turn = True
-
-    os.system("clear")
-    print_screen(plr, com)
-
-    while new_turn and guesses_allowed > plr.guesses_made:
-        plr.display_ships()
-        # guesses
-        make_guess_player(plr)
-        com.generate_guess()
-
-        os.system("clear")
-        display_guess(plr, com)
-        display_guess(com, plr)
-        com.outcome_message()
-        print(f"The Computer guessed {com.guesses[-1]}")
-        plr.outcome_message()
-        print_screen(plr, com)
-        print(f"computer: {com.ship_locations}")
-        print(f"player: {plr.ship_locations}")
-
+    """Run the game loop"""
+   
 
 def the_game():
     """Run the game"""
