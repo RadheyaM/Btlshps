@@ -36,16 +36,17 @@ class Battlegrid:
     """create a battleship board grid"""
     def __init__(
         self,
-        size: int,
-        ships: int,
-        message: str,
+        grid_size: int,
+        num_of_ships: int,
+        turn_message: str,
         guesses_allowed: int,
     ):
-        self.size = size
-        self.board = [["_" for x in range(size)] for y in range(size)]
-        self.ships = ships
-        self.message = message
-        self.type = type
+        self.size = grid_size
+        self.board = [
+            ["_" for rows in range(grid_size)] for cols in range(grid_size)
+        ]
+        self.ships = num_of_ships
+        self.message = turn_message
         self.guesses = []
         self.ship_locations = []
         self.guesses_allowed = guesses_allowed
@@ -161,16 +162,17 @@ def game_turn(player_grid, computer_grid):
     """Run a single turn of the game"""
     plr = player_grid
     com = computer_grid
-    os.system("clear")
-    print_screen(plr, com)
     guesses_allowed = plr.guesses_allowed
     new_turn = True
+
+    os.system("clear")
+    print_screen(plr, com)
+
     while new_turn and guesses_allowed > plr.guesses_made:
         plr.display_ships()
         # guesses
         make_guess_player(com)
         plr.generate_guess()
-
 
         os.system("clear")
         plr.display_guess()
