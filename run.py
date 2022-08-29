@@ -23,6 +23,7 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
 
 
 def print_screen(player_grid, computer_grid):
+    """Prints the game to terminal"""
     print(computer_grid.print_grid())
     print("_" * 30, "\n")
     print(player_grid.print_grid())
@@ -63,7 +64,7 @@ class Battlegrid:
             self.ship_locations.append((row, col))
 
     def generate_guess(self):
-        """Generates and saves guess co-ordinates to the Battlegrid
+        """Generates and saves computer guess co-ordinates to the Battlegrid
         instance guesses array"""
         row = randint(0, self.size - 1)
         col = randint(0, self.size - 1)
@@ -80,7 +81,9 @@ class Battlegrid:
         """Display appropriate symbol on the board depending on if
         guess is a hit or miss"""
         for guess in self.guesses:
+            print(f"guess: {guess}")
             for ship in self.ship_locations:
+                print(f"ship: {ship}")
                 if ship == guess:
                     self.board[ship[0]][ship[1]] = "H"
                     return
@@ -148,16 +151,16 @@ def welcome() -> int:
 
 
 def game_turn(player_grid, computer_grid):
-    """Run a single turn of a game"""
+    """Run a single turn of the game"""
     # guesses
     make_guess_player(player_grid)
-    computer_grid.generate_guess()
+    # computer_grid.generate_guess()
 
     # display guesses
     player_grid.display_guess()
+    # computer_grid.generate_guess()
     computer_grid.display_guess()
 
-    os.system("clear")
     print_screen(player_grid, computer_grid)
 
 
@@ -169,6 +172,9 @@ def the_game():
         player_grid, computer_grid = default_settings()
     elif choice == 2:
         player_grid, computer_grid = custom_settings()
+
+    player_grid.generate_ships()
+    computer_grid.generate_ships()
 
     game_turn(player_grid, computer_grid)
 
