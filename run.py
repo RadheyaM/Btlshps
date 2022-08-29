@@ -36,13 +36,13 @@ class Battlegrid:
         self,
         size: int,
         ships: int,
-        player_name: str,
-        guesses_allowed: int
+        message: str,
+        guesses_allowed: int,
     ):
         self.size = size
         self.board = [["_" for x in range(size)] for y in range(size)]
         self.ships = ships
-        self.player_name = player_name
+        self.message = message
         self.type = type
         self.guesses = []
         self.ship_locations = []
@@ -84,14 +84,14 @@ class Battlegrid:
         for guess in self.guesses:
             for ship in self.ship_locations:
                 if ship == guess:
-                    self.board[ship[0]][ship[1]] = "H"
+                    self.board[guess[0]][guess[1]] = "H"
                 self.board[guess[0]][guess[1]] = "M"
 
     def outcome_message(self):
         """Generates turn feedback message"""
         if self.guesses[-1] == self.ship_locations[-1]:
-            return print("Hit!!!")
-        return print("That's a miss!")
+            return print(f"{self.message} hit a ship!")
+        return print(f"{self.message} missed!")
 
      
 def custom_settings():
@@ -104,8 +104,8 @@ def custom_settings():
         5,
         100
     )
-    player_grid = Battlegrid(grid_size, num_ships, "Player1", num_guess)
-    computer_grid = Battlegrid(grid_size, num_ships, "Computer", num_guess)
+    player_grid = Battlegrid(grid_size, num_ships, "The Computer", num_guess)
+    computer_grid = Battlegrid(grid_size, num_ships, "You", num_guess)
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
     print_screen(player_grid, computer_grid)
@@ -114,8 +114,8 @@ def custom_settings():
 
 def default_settings():
     """Sets the default game settings"""
-    player_grid = Battlegrid(5, 4, "player", 100)
-    computer_grid = Battlegrid(5, 4, "computer", 100)
+    player_grid = Battlegrid(5, 4, "The Computer", 100)
+    computer_grid = Battlegrid(5, 4, "You", 100)
     os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
     print_screen(player_grid, computer_grid)
@@ -156,7 +156,10 @@ def welcome() -> int:
 
 def game_turn(player_grid, computer_grid):
     """Run a single turn of the game"""
+    player_grid.display_ships()
     # guesses
+    os.system("clear")
+    print_screen(player_grid, computer_grid)
     make_guess_player(player_grid)
     computer_grid.generate_guess()
 
@@ -165,8 +168,8 @@ def game_turn(player_grid, computer_grid):
     # computer_grid.generate_guess()
     computer_grid.display_guess()
     
-    os.system("clear")
     computer_grid.outcome_message()
+    os.system("clear")
     print_screen(player_grid, computer_grid)
 
     # computer guesses
