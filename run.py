@@ -3,7 +3,7 @@ from random import randint
 import os
 
 
-def read_int(prompt, min_val, max_val):
+def read_int(prompt, min_val: int, max_val: int) -> int:
     """prompts player for input and returns a response integer
     between min and max values.  All player input will go through
     this function."""
@@ -45,15 +45,15 @@ class Battlegrid:
         for row in self.board:
             print(" ".join(row))
 
-    def generate_ships(self):
-        """generate a list of random co-ordinates stored in the ship_locations
-        class array"""
+    def generate_coordinates(self, limit, array):
+        """generate a list of random co-ordinates stored either to
+        ship_locations or guesses depending on use case"""
         loops = 0
-        while loops < self.ships:
+        while loops < self.limit:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
             loops += 1
-            self.ship_locations.append((row, col))
+            self.array.append((row, col))
 
     def display_ships(self):
         """Display an S for every ship co-ordinate in the ship_locations
@@ -72,18 +72,18 @@ class Battlegrid:
                 self.board[guess[0]][guess[1]] = "M"
 
 
-def custom_settings(player_name: str):
+def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
     grid_size = read_int("Enter grid size between 5 and 20: \n", 5, 20)
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
-    num_guesses = read_int(
+    num_guess = read_int(
         "Enter number of guesses between 5 and 100: \n",
         5,
         100
     )
-    player_grid = Battlegrid(grid_size, num_ships, player_name, num_guesses)
-    computer_grid = Battlegrid(grid_size, num_ships, player_name, num_guesses)
+    player_grid = Battlegrid(grid_size, num_ships, "Player1", num_guess)
+    computer_grid = Battlegrid(grid_size, num_ships, "Computer", num_guess)
     print("-----CUSTOM SETTINGS CHOSEN-----")
     return player_grid, computer_grid
 
@@ -96,11 +96,15 @@ def default_settings():
     return player_grid, computer_grid
 
 
-def make_guess(size: int, grid):
+def make_guess_player(player_grid):
     """Prompts player to enter guesses and saves to instance guesses list"""
-    row_guess = read_int("Guess a row: ", 0, size - 1)
-    col_guess = read_int("Guess a column: ", 0, size - 1)
-    grid.guesses.append((row_guess, col_guess))
+    row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
+    col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
+    player_grid.guesses.append((row_guess, col_guess))
+
+
+def make_guess_computer(computer_grid):
+    """Computer makes a random guess"""
 
 
 def welcome() -> int:
@@ -128,17 +132,13 @@ def welcome() -> int:
 
 
 def the_game():
-    """Run the game"""
+    """Run the game""" 
     choice = welcome()
     if choice == 1:
         player_grid, computer_grid = default_settings()
     elif choice == 2:
-        player_grid, computer_grid = custom_settings("mark")
+        player_grid, computer_grid = custom_settings()
     os.system("clear")
-
-    player_grid.generate_ships()
-    player_grid.display_ships()
-    make_guess(5, player_grid)
 
     print(computer_grid.print_grid())
     print("_" * 30, "\n")
