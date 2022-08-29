@@ -82,15 +82,6 @@ class Battlegrid:
         for ship in self.ship_locations:
             self.board[ship[0]][ship[1]] = "S"
 
-    def display_guess(self):
-        """Display appropriate symbol on the board depending on if
-        guess is a hit or miss"""
-        for guess in self.guesses:
-            for ship in self.ship_locations:
-                if ship == guess:
-                    self.board[guess[0]][guess[1]] = "H"
-                self.board[guess[0]][guess[1]] = "M"
-
     def outcome_message(self):
         """Generates turn feedback message"""
         if self.guesses[-1] == self.ship_locations[-1]:
@@ -124,6 +115,16 @@ def default_settings():
     print("-----DEFAULT SETTINGS CHOSEN-----")
     print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
+
+
+def display_guess(guessing, target):
+    """Display appropriate symbol on the board depending on if
+    guess is a hit or miss."""
+    for guess in guessing.guesses:
+        for ship in target.ship_locations:
+            if ship == guess:
+                target.board[guess[0]][guess[1]] = "H"
+            target.board[guess[0]][guess[1]] = "M"
 
 
 def make_guess_player(player_grid):
@@ -171,18 +172,18 @@ def game_turn(player_grid, computer_grid):
     while new_turn and guesses_allowed > plr.guesses_made:
         plr.display_ships()
         # guesses
-        make_guess_player(com)
-        plr.generate_guess()
+        make_guess_player(plr)
+        com.generate_guess()
 
         os.system("clear")
-        plr.display_guess()
-        com.display_guess()
+        display_guess(plr, com)
+        display_guess(com, plr)
         com.outcome_message()
-        print(f"The Computer guessed {plr.guesses[-1]}")
+        print(f"The Computer guessed {com.guesses[-1]}")
         plr.outcome_message()
         print_screen(plr, com)
-        print(com.ship_locations)
-        print(plr.ship_locations)
+        print(f"computer: {com.ship_locations}")
+        print(f"player: {plr.ship_locations}")
 
 
 def the_game():
