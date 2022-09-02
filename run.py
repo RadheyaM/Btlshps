@@ -26,7 +26,7 @@ def print_screen(plr, com):
     """Prints the game to terminal"""
     plr.grid_symbols()
     com.grid_symbols()
-    print("-------COMPUTER'S BOARD-------")
+    print("-------THE COMPUTER'S BOARD-------", "\n")
     com.print_grid()
     print("_" * 30, "\n", "\n")
     print("----------YOUR BOARD----------", "\n")
@@ -43,7 +43,7 @@ class Battlegrid:
     ):
         self.size = grid_size
         self.board = [
-            ["_" for rows in range(grid_size)] for cols in range(grid_size)
+            ["___" for rows in range(grid_size)] for cols in range(grid_size)
         ]
         self.ships = num_of_ships
         self.ship_locations = []
@@ -57,7 +57,7 @@ class Battlegrid:
     def print_grid(self):
         """print the grid"""
         for row in self.board:
-            print(" ".join(row))
+            print(" ".join(row), "\n")
 
     def generate_ships(self):
         """generate a list of unique random co-ordinates"""
@@ -77,12 +77,12 @@ class Battlegrid:
         for ship in self.ship_locations:
             # display the player's ships but not the computer's
             # if self.guess_id == "The Computer":
-            self.board[ship[0]][ship[1]] = "S"
+            self.board[ship[0]][ship[1]] = "_S_"
         for hit in self.hits:
-            self.board[hit[0]][hit[1]] = "H"
+            self.board[hit[0]][hit[1]] = "_H_"
         for guess in self.guesses:
             if guess not in self.hits:
-                self.board[guess[0]][guess[1]] = "M"
+                self.board[guess[0]][guess[1]] = "_M_"
 
     def player_guess(self):
         """Get a guess from the player avoid duplicates"""
@@ -92,6 +92,10 @@ class Battlegrid:
             print(
                 f"You already guessed {(row + 1, col + 1)}, try again"
             )
+        if (row, col) in self.ship_locations:
+            self.hits.append((row, col))
+            self.guesses.append((row, col))
+            return
         self.guesses.append((row, col))
 
     def computer_guess(self):
@@ -103,6 +107,10 @@ class Battlegrid:
             col = randint(0, self.size - 1)
             if (row, col) in self.guesses:
                 continue
+            if (row, col) in self.ship_locations:
+                self.hits.append((row, col))
+                self.guesses.append((row, col))
+                return
             self.guesses.append((row, col))
             loops += 1
 
@@ -161,9 +169,21 @@ def welcome() -> int:
 
 def game_loop(plr, com):
     """Run the game loop"""
+    new_turn = True
     print_screen(plr, com)
-    print(plr.ship_locations)
-    print(com.ship_locations)
+
+    while new_turn:
+
+        com.player_guess()
+        plr.computer_guess()
+
+        os.system("clear")
+        print_screen(plr, com)
+
+        print(f"You guessed {com.guesses[-1]}")
+        com.outcome_message()
+        print(f"The Computer guessed {plr.guesses[-1]}")
+        plr.outcome_message()
 
 
 def main():
