@@ -24,12 +24,14 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
 
 def print_screen(plr, com):
     """Prints the game to terminal"""
+    plr.generate_ships()
+    com.generate_ships()
+    plr.grid_symbols()
+    com.grid_symbols()
     print("-------COMPUTER'S BOARD-------")
-    com.display_ships()
     com.print_grid()
     print("_" * 30, "\n", "\n")
-    print("----------YOUR BOARD----------")
-    plr.display_ships()
+    print("----------YOUR BOARD----------", "\n")
     plr.print_grid()
 
 
@@ -47,9 +49,12 @@ class Battlegrid:
         ]
         self.ships = num_of_ships
         self.ship_locations = []
+        # id of the opposing player
         self.guess_id = guess_id
         # guesses made by the other player/computer
         self.guesses = []
+        # hits on this board made by opponent
+        self.hits = []
 
     def print_grid(self):
         """print the grid"""
@@ -64,15 +69,22 @@ class Battlegrid:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
             # check for duplicates, don't add if so
-            for tup in locs:
-                if row == tup[0] and col == tup[1]:
-                    return
+            if (row, col) in locs:
+                continue
             locs.append((row, col))
             loops += 1
-  
+
     def grid_symbols(self):
         """Display appropriate symbols on the board"""
-
+        for ship in self.ship_locations:
+            # display the player's ships but not the computer's
+            # if self.guess_id == "The Computer":
+            self.board[ship[0]][ship[1]] = "S"
+        for hit in self.hits:
+            self.board[hit[0]][hit[1]] = "H"
+        for guess in self.guesses:
+            if guess not in self.hits:
+                self.board[guess[0]][guess[1]] = "M"
 
     def generate_guess(self):
         """Generates and saves computer guess co-ordinates to the Battlegrid
@@ -84,11 +96,11 @@ class Battlegrid:
     def outcome_message(self):
         """Generates appropriate feedback based on outcome value"""
 
-    def make_guess_player(self):
-        """Prompts player to enter guesses and saves to instance guesses list"""
-        row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
-        col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
-        player_grid.guesses.append((row_guess, col_guess))
+    # def make_guess_player(self):
+    #     """Prompts player to enter guesses and saves to instance guesses list"""
+    #     row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
+    #     col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
+    #     player_grid.guesses.append((row_guess, col_guess))
 
 
 def custom_settings():
@@ -100,7 +112,6 @@ def custom_settings():
     computer_grid = Battlegrid(grid_size, num_ships, "You")
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
-    print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
 
 
@@ -110,7 +121,6 @@ def default_settings():
     computer_grid = Battlegrid(5, 4, "You")
     os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
-    print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
 
 
@@ -141,6 +151,9 @@ def welcome() -> int:
 
 def game_loop(plr, com):
     """Run the game loop"""
+    print_screen(plr, com)
+    print(plr.ship_locations)
+    print(com.ship_locations)
 
 
 def main():
