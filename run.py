@@ -39,19 +39,17 @@ class Battlegrid:
         self,
         grid_size: int,
         num_of_ships: int,
-        guess_id: str,
-        guesses_allowed: int,
+        guess_id: str
     ):
         self.size = grid_size
         self.board = [
             ["_" for rows in range(grid_size)] for cols in range(grid_size)
         ]
         self.ships = num_of_ships
-        self.guess_id = guess_id
-        self.guesses = []
         self.ship_locations = []
-        self.guesses_allowed = guesses_allowed
-        self.guesses_made = 0
+        self.guess_id = guess_id
+        # guesses made by the other player/computer
+        self.guesses = []
 
     def print_grid(self):
         """print the grid"""
@@ -59,14 +57,22 @@ class Battlegrid:
             print(" ".join(row))
 
     def generate_ships(self):
-        """generate a list of random co-ordinates stored to
-        ship_locations and used to generate ships on the board"""
+        """generate a list of unique random co-ordinates"""
         loops = 0
+        locs = self.ship_locations
         while loops < self.ships:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
+            # check for duplicates, don't add if so
+            for tup in locs:
+                if row == tup[0] and col == tup[1]:
+                    return
+            locs.append((row, col))
             loops += 1
-            self.ship_locations.append((row, col))
+  
+    def grid_symbols(self):
+        """Display appropriate symbols on the board"""
+
 
     def generate_guess(self):
         """Generates and saves computer guess co-ordinates to the Battlegrid
@@ -74,13 +80,15 @@ class Battlegrid:
         row = randint(0, self.size - 1)
         col = randint(0, self.size - 1)
         self.guesses.append((row, col))
-        self.guesses_made += 1
 
-    def display_ships(self):
-        """Display an S for every ship co-ordinate in the ship_locations
-        array on the printed board"""
-        for ship in self.ship_locations:
-            self.board[ship[0]][ship[1]] = "S"
+    def outcome_message(self):
+        """Generates appropriate feedback based on outcome value"""
+
+    def make_guess_player(self):
+        """Prompts player to enter guesses and saves to instance guesses list"""
+        row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
+        col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
+        player_grid.guesses.append((row_guess, col_guess))
 
 
 def custom_settings():
@@ -88,13 +96,8 @@ def custom_settings():
     the number of guesses, and win conditions"""
     grid_size = read_int("Enter grid size between 5 and 20: \n", 5, 20)
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
-    num_guess = read_int(
-        "Enter number of guesses between 5 and 100: \n",
-        5,
-        100
-    )
-    player_grid = Battlegrid(grid_size, num_ships, "The Computer", num_guess)
-    computer_grid = Battlegrid(grid_size, num_ships, "You", num_guess)
+    player_grid = Battlegrid(grid_size, num_ships, "The Computer")
+    computer_grid = Battlegrid(grid_size, num_ships, "You")
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
     print_screen(player_grid, computer_grid)
@@ -103,36 +106,12 @@ def custom_settings():
 
 def default_settings():
     """Sets the default game settings"""
-    player_grid = Battlegrid(5, 4, "The Computer", 100)
-    computer_grid = Battlegrid(5, 4, "You", 100)
+    player_grid = Battlegrid(5, 4, "The Computer")
+    computer_grid = Battlegrid(5, 4, "You")
     os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
     print_screen(player_grid, computer_grid)
     return player_grid, computer_grid
-
-
-def display_guess(guessing, target):
-    """Display appropriate symbol on the board depending on if
-    guess is a hit or miss."""
-    for guess in guessing.guesses:
-        for ship in target.ship_locations:
-            if ship == guess:
-                target.board[guess[0]][guess[1]] = "H"
-            target.board[guess[0]][guess[1]] = "M"
-
-
-def outcome_message(guessing, target):
-    """Generates turn feedback message"""
-    if guessing.guesses[-1] == target.ship_locations[-1]:
-        return print(f"{guessing.guess_id} hit a ship!")
-    return print(f"{guessing.guess_id} missed!")
-
-
-def make_guess_player(player_grid):
-    """Prompts player to enter guesses and saves to instance guesses list"""
-    row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
-    col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
-    player_grid.guesses.append((row_guess, col_guess))
 
 
 def welcome() -> int:
@@ -163,11 +142,6 @@ def welcome() -> int:
 def game_loop(plr, com):
     """Run the game loop"""
 
-    os.system("clear")
-    print_screen(plr, com)
-    print(plr.ship_locations)
-    print(com.ship_locations)
-
 
 def main():
     """start the game and apply settings"""
@@ -176,9 +150,6 @@ def main():
         plr, com = default_settings()
     elif choice == 2:
         plr, com = custom_settings()
-
-    plr.generate_ships()
-    com.generate_ships()
 
     game_loop(plr, com)
 
