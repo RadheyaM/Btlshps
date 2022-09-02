@@ -87,20 +87,29 @@ class Battlegrid:
                 self.board[guess[0]][guess[1]] = "M"
 
     def generate_guess(self):
-        """Generates and saves computer guess co-ordinates to the Battlegrid
-        instance guesses array"""
-        row = randint(0, self.size - 1)
-        col = randint(0, self.size - 1)
-        self.guesses.append((row, col))
+        """Generates and saves a unique computer guess to the player's
+        Battlegrid instance guesses array"""
+        loops = 0
+        while loops == 0:
+            row = randint(0, self.size - 1)
+            col = randint(0, self.size - 1)
+            if (row, col) in self.guesses:
+                continue
+            self.guesses.append((row, col))
+            loops += 1
 
     def outcome_message(self):
         """Generates appropriate feedback based on outcome value"""
+        if self.guesses[-1] in self.ship_locations:
+            return print(f"{self.guess_id} hit a ship!")
+        return print(f"{self.guess_id} missed...")
 
-    # def make_guess_player(self):
-    #     """Prompts player to enter guesses and saves to instance guesses list"""
-    #     row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
-    #     col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
-    #     player_grid.guesses.append((row_guess, col_guess))
+
+# def make_guess_player(self):
+# """Prompts player to enter guesses and saves to instance guesses list"""
+# row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
+# col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
+# player_grid.guesses.append((row_guess, col_guess))
 
 
 def custom_settings():
