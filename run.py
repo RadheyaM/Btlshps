@@ -24,8 +24,6 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
 
 def print_screen(plr, com):
     """Prints the game to terminal"""
-    plr.generate_ships()
-    com.generate_ships()
     plr.grid_symbols()
     com.grid_symbols()
     print("-------COMPUTER'S BOARD-------")
@@ -86,7 +84,17 @@ class Battlegrid:
             if guess not in self.hits:
                 self.board[guess[0]][guess[1]] = "M"
 
-    def generate_guess(self):
+    def player_guess(self):
+        """Get a guess from the player avoid duplicates"""
+        row = read_int("Guess a row: ", 1, self.size) - 1
+        col = read_int("Guess a column: ", 1, self.size) - 1
+        if (row, col) in self.guesses:
+            print(
+                f"You already guessed {(row + 1, col + 1)}, try again"
+            )
+        self.guesses.append((row, col))
+
+    def computer_guess(self):
         """Generates and saves a unique computer guess to the player's
         Battlegrid instance guesses array"""
         loops = 0
@@ -103,13 +111,6 @@ class Battlegrid:
         if self.guesses[-1] in self.ship_locations:
             return print(f"{self.guess_id} hit a ship!")
         return print(f"{self.guess_id} missed...")
-
-
-# def make_guess_player(self):
-# """Prompts player to enter guesses and saves to instance guesses list"""
-# row_guess = read_int("Guess a row: ", 0, player_grid.size - 1)
-# col_guess = read_int("Guess a column: ", 0, player_grid.size - 1)
-# player_grid.guesses.append((row_guess, col_guess))
 
 
 def custom_settings():
@@ -172,6 +173,9 @@ def main():
         plr, com = default_settings()
     elif choice == 2:
         plr, com = custom_settings()
+
+    plr.generate_ships()
+    com.generate_ships()
 
     game_loop(plr, com)
 
