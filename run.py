@@ -39,13 +39,17 @@ class Battlegrid:
         self,
         grid_size: int,
         num_of_ships: int,
-        guess_id: str
+        guess_id: str,
+        hits_to_win: int,
+        guesses_allowed: int
     ):
         self.size = grid_size
         self.board = [
             ["___" for rows in range(grid_size)] for cols in range(grid_size)
         ]
         self.ships = num_of_ships
+        self.hits = hits_to_win
+        self.guesses_allowed = guesses_allowed
         self.ship_locations = []
         # id of the opposing player
         self.guess_id = guess_id
@@ -85,7 +89,7 @@ class Battlegrid:
                 self.board[guess[0]][guess[1]] = "_M_"
 
     def player_guess(self):
-        """Get a guess from the player avoid duplicates"""
+        """Get a guess from the player avoiding duplicates"""
         row = read_int("Guess a row: ", 1, self.size) - 1
         col = read_int("Guess a column: ", 1, self.size) - 1
         if (row, col) in self.guesses:
@@ -124,10 +128,20 @@ class Battlegrid:
 def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
-    grid_size = read_int("Enter grid size between 5 and 20: \n", 5, 20)
+    grid_size = read_int("Enter grid size between 5 and 10: \n", 5, 10)
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
-    player_grid = Battlegrid(grid_size, num_ships, "The Computer")
-    computer_grid = Battlegrid(grid_size, num_ships, "You")
+    hits_to_win = read_int(
+        "Enter number of ships hit to win: \n", 1, num_ships
+        )
+    guesses_allowed = read_int(
+        "Enter number of guesses allowed between 1 and 100: \n", 1, 100
+        )
+    player_grid = Battlegrid(
+        grid_size, num_ships, "The Computer", hits_to_win, guesses_allowed
+        )
+    computer_grid = Battlegrid(
+        grid_size, num_ships, "You", hits_to_win, guesses_allowed
+        )
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
     return player_grid, computer_grid
@@ -135,8 +149,8 @@ def custom_settings():
 
 def default_settings():
     """Sets the default game settings"""
-    player_grid = Battlegrid(5, 4, "The Computer")
-    computer_grid = Battlegrid(5, 4, "You")
+    player_grid = Battlegrid(5, 4, "The Computer", 5, 100)
+    computer_grid = Battlegrid(5, 4, "You", 5, 100)
     os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
     return player_grid, computer_grid
