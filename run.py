@@ -128,7 +128,6 @@ class Battlegrid:
 def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
-    grid_size = read_int("Enter grid size between 5 and 10: \n", 5, 10)
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
     hits_to_win = read_int(
         "Enter number of ships hit to win: \n", 1, num_ships
@@ -137,10 +136,10 @@ def custom_settings():
         "Enter number of guesses allowed between 1 and 100: \n", 1, 100
         )
     player_grid = Battlegrid(
-        grid_size, num_ships, "The Computer", hits_to_win, guesses_allowed
+        5, num_ships, "The Computer", hits_to_win, guesses_allowed
         )
     computer_grid = Battlegrid(
-        grid_size, num_ships, "You", hits_to_win, guesses_allowed
+        5, num_ships, "You", hits_to_win, guesses_allowed
         )
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
