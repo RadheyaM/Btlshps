@@ -18,7 +18,7 @@ def read_int(prompt, min_val: int, max_val: int) -> int:
             else:
                 return entry
         except ValueError:
-            print("Ooops, you didn't enter a number dummy!")
+            print("Ooops, you didn't enter a number!")
             print(f"Please enter a number between {min_val} & {max_val}")
 
 
@@ -26,11 +26,13 @@ def print_screen(plr, com):
     """Prints the game to terminal"""
     plr.grid_symbols()
     com.grid_symbols()
-    print("-------THE COMPUTER'S BOARD-------")
+    print("\n")
+    print("----THE COMPUTER'S BOARD----", "\n")
     com.print_grid()
-    print("_" * 30, "\n", "\n")
-    print("----------YOUR BOARD----------")
+    print("\n")
+    print("---------YOUR BOARD---------", "\n")
     plr.print_grid()
+    print("\n")
 
 
 class Battlegrid:
@@ -160,7 +162,7 @@ def welcome() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps!")
     print("Sink all of your opponent's ships before they sink yours!")
-    print("To quit just refresh the page at any time.")
+    print("To quit just refresh the page at any time.\n")
     while True:
         print("Enter 1 for default game mode")
         print("Enter 2 for custom game mode ")
