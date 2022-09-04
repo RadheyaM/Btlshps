@@ -26,10 +26,10 @@ def print_screen(plr, com):
     """Prints the game to terminal"""
     plr.grid_symbols()
     com.grid_symbols()
-    print("-------THE COMPUTER'S BOARD-------", "\n")
+    print("-------THE COMPUTER'S BOARD-------")
     com.print_grid()
     print("_" * 30, "\n", "\n")
-    print("----------YOUR BOARD----------", "\n")
+    print("----------YOUR BOARD----------")
     plr.print_grid()
 
 
@@ -61,7 +61,7 @@ class Battlegrid:
     def print_grid(self):
         """print the grid"""
         for row in self.board:
-            print(" ".join(row), "\n")
+            print(" ".join(row))
 
     def generate_ships(self):
         """generate a list of unique random co-ordinates"""
@@ -158,15 +158,15 @@ def default_settings():
 
 def welcome() -> int:
     """Greeting message and choose game mode"""
-    print("Welcome to Btlshps! Time to play the game!")
-    print("Sink all your opponent's ships before they sink yours!")
-    print("To quit just refresh page at any time.")
+    print("Welcome to Btlshps!")
+    print("Sink all of your opponent's ships before they sink yours!")
+    print("To quit just refresh the page at any time.")
     while True:
         print("Enter 1 for default game mode")
         print("Enter 2 for custom game mode ")
         print("Enter 3 for explanation of game modes\n")
         choice = read_int(
-            "Would you like to do?\n",
+            "What would you like to do?\n",
             min_val=1,
             max_val=3
             )
@@ -178,7 +178,8 @@ def welcome() -> int:
         print("Grid size of 5 by 5 with 4 ships each")
         print("100 guesses each")
         print("First to hit all the opponents ships wins")
-        print("CUSTOM MODE: choose your own settings")
+        print("CUSTOM MODE:")
+        print("Choose your own settings")
 
 
 def game_loop(plr, com):
