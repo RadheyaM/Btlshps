@@ -128,6 +128,7 @@ class Battlegrid:
 def custom_settings():
     """Allows the player to set the size of the board,
     the number of guesses, and win conditions"""
+    os.system("clear")
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
     hits_to_win = read_int(
         "Enter number of ships hit to win: \n", 1, num_ships
@@ -165,7 +166,7 @@ def welcome() -> int:
         print("Enter 2 for custom game mode ")
         print("Enter 3 for explanation of game modes\n")
         choice = read_int(
-            "Would you like to play default or custom mode?\n",
+            "Would you like to do?\n",
             min_val=1,
             max_val=3
             )
@@ -174,9 +175,9 @@ def welcome() -> int:
         if choice == 2:
             return 2
         print("DEFAULT SETTINGS:")
-        print("Grid size: 5 by 5 with 4 ships each")
-        print("Unlimited Guesses")
-        print("Winner is first to hit all opponents ships!")
+        print("Grid size of 5 by 5 with 4 ships each")
+        print("100 guesses each")
+        print("First to hit all the opponents ships wins")
         print("CUSTOM MODE: choose your own settings")
 
 
