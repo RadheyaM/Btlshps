@@ -50,7 +50,7 @@ class Battlegrid:
             ["___" for rows in range(grid_size)] for cols in range(grid_size)
         ]
         self.ships = num_of_ships
-        self.hits = hits_to_win
+        self.hits_to_win = hits_to_win
         self.guesses_allowed = guesses_allowed
         self.ship_locations = []
         # id of the opposing player
@@ -151,8 +151,8 @@ def custom_settings():
 
 def default_settings():
     """Sets the default game settings"""
-    player_grid = Battlegrid(5, 4, "The Computer", 5, 100)
-    computer_grid = Battlegrid(5, 4, "You", 5, 100)
+    player_grid = Battlegrid(5, 4, "The Computer", 4, 100)
+    computer_grid = Battlegrid(5, 4, "You", 4, 100)
     os.system("clear")
     print("-----DEFAULT SETTINGS CHOSEN-----")
     return player_grid, computer_grid
@@ -161,7 +161,7 @@ def default_settings():
 def welcome() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps!")
-    print("Sink all of your opponent's ships before they sink yours!")
+    print("Sink your opponent's ships before they sink yours!")
     print("To quit just refresh the page at any time.\n")
     while True:
         print("Enter 1 for default game mode")
@@ -187,12 +187,26 @@ def welcome() -> int:
 def game_loop(plr, com):
     """Run the game loop"""
     new_turn = True
+    guesses_made = 0
     print_screen(plr, com)
 
     while new_turn:
 
         com.player_guess()
         plr.computer_guess()
+        guesses_made += 1
+
+        # computer wins by hit number
+        if len(plr.hits) == plr.hits_to_win:
+            new_turn = False
+            os.system("clear")
+            return print("hit no.! YOU LOSE!!!")
+
+        # player wins by hit number
+        if len(com.hits) == plr.hits_to_win:
+            new_turn = False
+            os.system("clear")
+            return print("hit no! YOU WIN!!!")
 
         os.system("clear")
         print_screen(plr, com)
