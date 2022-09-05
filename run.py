@@ -164,9 +164,9 @@ def welcome() -> int:
     print("Sink your opponent's ships before they sink yours!")
     print("To quit just refresh the page at any time.\n")
     while True:
-        print("Enter 1 for default game mode")
-        print("Enter 2 for custom game mode ")
-        print("Enter 3 for explanation of game modes\n")
+        print("--Enter '1' for default game mode")
+        print("--Enter '2' for custom game mode ")
+        print("--Enter '3' for explanation of game modes\n")
         choice = read_int(
             "What would you like to do?\n",
             min_val=1,
@@ -176,12 +176,13 @@ def welcome() -> int:
             return 1
         if choice == 2:
             return 2
+        os.system("clear")
         print("DEFAULT SETTINGS:")
         print("Grid size of 5 by 5 with 4 ships each")
         print("100 guesses each")
         print("First to hit all the opponents ships wins")
         print("CUSTOM MODE:")
-        print("Choose your own settings")
+        print("Choose your own settings\n")
 
 
 def game_loop(plr, com):
