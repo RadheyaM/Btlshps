@@ -27,10 +27,10 @@ def print_screen(plr, com):
     plr.grid_symbols()
     com.grid_symbols()
     print("\n")
-    print("----THE COMPUTER'S BOARD----", "\n")
+    print("----THE COMPUTER'S BORED----", "\n")
     com.print_grid()
     print("\n")
-    print("---------YOUR BOARD---------", "\n")
+    print("------AND YOUR BORED-------", "\n")
     plr.print_grid()
     print("\n")
 
@@ -213,7 +213,7 @@ def game_loop(plr, com):
         print_screen(plr, com)
 
         print(
-            f"You guessed {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+            f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
         com.outcome_message()
         print(
