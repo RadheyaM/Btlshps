@@ -82,13 +82,13 @@ class Battlegrid:
         """Display appropriate symbols on the board"""
         for ship in self.ship_locations:
             # display the player's ships but not the computer's
-            # if self.guess_id == "The Computer":
-            self.board[ship[0]][ship[1]] = "_S_"
+            if self.guess_id == "The Computer":
+                self.board[ship[0]][ship[1]] = "SHP"
         for hit in self.hits:
-            self.board[hit[0]][hit[1]] = "_H_"
+            self.board[hit[0]][hit[1]] = "###"
         for guess in self.guesses:
             if guess not in self.hits:
-                self.board[guess[0]][guess[1]] = "_M_"
+                self.board[guess[0]][guess[1]] = "_X_"
 
     def player_guess(self):
         """Get a guess from the player avoiding duplicates"""
