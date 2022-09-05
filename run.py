@@ -107,8 +107,8 @@ class Battlegrid:
     def computer_guess(self):
         """Generates and saves a unique computer guess to the player's
         Battlegrid instance guesses array"""
-        loops = 0
-        while loops == 0:
+        loop = True
+        while loop:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
             if (row, col) in self.guesses:
@@ -118,7 +118,7 @@ class Battlegrid:
                 self.guesses.append((row, col))
                 return
             self.guesses.append((row, col))
-            loops += 1
+            loop = False
 
     def outcome_message(self):
         """Generates appropriate feedback based on outcome value"""
