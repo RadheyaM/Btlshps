@@ -211,9 +211,13 @@ def game_loop(plr, com):
         os.system("clear")
         print_screen(plr, com)
 
-        print(f"You guessed {com.guesses[-1]}")
+        print(
+            f"You guessed {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+            )
         com.outcome_message()
-        print(f"The Computer guessed {plr.guesses[-1]}")
+        print(
+            f"Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
+        )
         plr.outcome_message()
 
 
