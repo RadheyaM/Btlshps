@@ -39,6 +39,8 @@ def print_screen(plr, com, game_status):
     print("------AND YOUR BORED-------", "\n")
     plr.print_grid()
     print("\n")
+    if game == "over":
+        print("Click 'Run Program' button for new game.")
 
 
 class Battlegrid:
@@ -85,7 +87,7 @@ class Battlegrid:
             loops += 1
 
     def grid_symbols(self):
-        """Display appropriate symbols on the board"""
+        """Display appropriate symbols on the board in-play"""
         for ship in self.ship_locations:
             # display the player's ships but not the computer's
             if self.guess_id == "The Computer":
@@ -96,9 +98,8 @@ class Battlegrid:
             if guess not in self.hits:
                 self.board[guess[0]][guess[1]] = "_X_"
 
-    # print the board showing computer ship locations.
     def grid_symbols_game_over(self):
-        """Display appropriate symbols on the board"""
+        """Display appropriate symbols on the board on game over"""
         for ship in self.ship_locations:
             self.board[ship[0]][ship[1]] = "SHP"
         for hit in self.hits:
@@ -185,7 +186,7 @@ def welcome() -> int:
         print("--Enter '2' for custom game mode. ")
         print("--Enter '3' for game mode details.\n")
         choice = read_int(
-            "What would you like to do?\n",
+            "Please enter option number: \n",
             min_val=1,
             max_val=3
             )
@@ -222,27 +223,29 @@ def game_loop(plr, com):
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
             os.system("clear")
-            print("hit no.! YOU LOSE!!!")
-            return print_screen(plr, com, "over")
+            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
+            print_screen(plr, com, "over")
+            return
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             os.system("clear")
-            print("hit no! YOU WIN!!!")
-            return print_screen(plr, com, "over")
+            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
+            print_screen(plr, com, "over")
+            return
 
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
             if len(plr.hits) > len(com.hits):
                 os.system("clear")
-                print("The computer hit more ships. You Lose!")
+                print("The computer hit more ships. YOU LOSE!")
             if len(plr.hits) < len(com.hits):
                 os.system("clear")
-                print("You Win! You hit the most ships!")
+                print("YOU WIN!!! You hit the most ships!")
             if len(plr.hits) == len(com.hits):
                 os.system("clear")
-                print("It's a draw...")
+                print("It's a draw...yawn...")
             return print_screen(plr, com, "over")
 
         os.system("clear")
