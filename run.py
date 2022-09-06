@@ -108,19 +108,22 @@ class Battlegrid:
             if guess not in self.hits:
                 self.board[guess[0]][guess[1]] = "_X_"
 
-    def player_guess(self):
+    def player_guess(self) -> int:
         """Get a guess from the player avoiding duplicates"""
-        row = read_int("Guess a row: ", 1, self.size) - 1
-        col = read_int("Guess a column: ", 1, self.size) - 1
-        if (row, col) in self.guesses:
-            print(
-                f"You already guessed {(row + 1, col + 1)}, try again"
-            )
-        if (row, col) in self.ship_locations:
-            self.hits.append((row, col))
-            self.guesses.append((row, col))
-            return
-        self.guesses.append((row, col))
+        while True:
+            row = read_int("Guess a row: ", 1, self.size) - 1
+            col = read_int("Guess a column: ", 1, self.size) - 1
+            if (row, col) in self.guesses:
+                print(
+                    f"You already guessed {(row+1, col+1)}. Try again..."
+                )
+            elif (row, col) in self.ship_locations:
+                self.hits.append((row, col))
+                self.guesses.append((row, col))
+                return
+            else:
+                self.guesses.append((row, col))
+                return
 
     def computer_guess(self):
         """Generates and saves a unique computer guess to the player's
@@ -251,6 +254,7 @@ def game_loop(plr, com):
         os.system("clear")
         print_screen(plr, com, "in-play")
 
+        # turn summary prints below the boards
         print(
             f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
