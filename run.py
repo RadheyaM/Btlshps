@@ -1,25 +1,7 @@
-"""Module containing the board class used in run.py"""
+"""Code to run the game in the terminal"""
 import os
 from board_class import Battlegrid
-
-
-def read_int(prompt, min_val: int, max_val: int) -> int:
-    """prompts player for input and returns a response integer
-    between min and max values.  All player input will go through
-    this function."""
-    while True:
-        player_input = input(prompt)
-        try:
-            entry = int(player_input)
-            if entry > max_val:
-                print("The number you entered is too large. Please try again!")
-            elif entry < min_val:
-                print("The number you entered is too small.  Please try again")
-            else:
-                return entry
-        except ValueError:
-            print("Ooops, you didn't enter a number!")
-            print(f"Please enter a number between {min_val} & {max_val}")
+from board_class import read_int
 
 
 def print_screen(plr, com, game_status):
@@ -65,7 +47,7 @@ def custom_settings():
     return player_grid, computer_grid
 
 
-def welcome() -> int:
+def game_start_options() -> int:
     """Greeting message and choose game mode"""
     print("Welcome to Btlshps!")
     print("Sink your opponent's ships before they sink yours!")
@@ -135,7 +117,7 @@ def game_loop(plr, com):
             if len(plr.hits) == len(com.hits):
                 os.system("clear")
                 print("It's a draw...yawn...")
-            return print_screen(plr, com, "over")
+            print_screen(plr, com, "over")
 
         os.system("clear")
         print_screen(plr, com, "in-play")
@@ -152,8 +134,9 @@ def game_loop(plr, com):
 
 
 def main():
-    """start the game and apply settings"""
-    choice = welcome()
+    """start the game and apply settings based on player
+    choice"""
+    choice = game_start_options()
     if choice == 1:
         plr, com = Battlegrid("The Computer"), Battlegrid("You")
     elif choice == 2:
