@@ -47,11 +47,11 @@ class Battlegrid:
     """create a battleship board grid"""
     def __init__(
         self,
-        grid_size: int,
-        num_of_ships: int,
         guess_id: str,
-        hits_to_win: int,
-        guesses_allowed: int
+        grid_size=5,
+        num_of_ships=4,
+        hits_to_win=5,
+        guesses_allowed=100
     ):
         self.size = grid_size
         self.board = [
@@ -160,22 +160,13 @@ def custom_settings():
         "Enter number of guesses allowed between 1 and 100: \n", 1, 100
         )
     player_grid = Battlegrid(
-        5, num_ships, "The Computer", hits_to_win, guesses_allowed
+         "The Computer", 5, num_ships, hits_to_win, guesses_allowed
         )
     computer_grid = Battlegrid(
-        5, num_ships, "You", hits_to_win, guesses_allowed
+         "You", 5, num_ships, hits_to_win, guesses_allowed
         )
     os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
-    return player_grid, computer_grid
-
-
-def default_settings():
-    """Sets the default game settings"""
-    player_grid = Battlegrid(5, 4, "The Computer", 4, 100)
-    computer_grid = Battlegrid(5, 4, "You", 4, 100)
-    os.system("clear")
-    print("-----DEFAULT SETTINGS CHOSEN-----")
     return player_grid, computer_grid
 
 
@@ -269,7 +260,7 @@ def main():
     """start the game and apply settings"""
     choice = welcome()
     if choice == 1:
-        plr, com = default_settings()
+        plr, com = Battlegrid("The Computer"), Battlegrid("You")
     elif choice == 2:
         plr, com = custom_settings()
 
