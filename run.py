@@ -175,7 +175,7 @@ def custom_settings():
         ">>Enter number of ships between 1 and 10: \n", 1, 10
         )
     hits_to_win = read_input(
-        ">>Enter number of ships hit to win: \n", 1, num_ships
+        f">>Enter number of the {num_ships} ships hit to win: \n", 1, num_ships
         )
     guesses_allowed = read_input(
         ">>Enter number of guesses allowed between 1 and 100: \n", 1, 100
@@ -269,14 +269,14 @@ def game_loop(plr, com):
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!\n" * 10)
+            print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
             print_screen(plr, com)
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!" * 10)
+            print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
             print_screen(plr, com)
 
         # most ships hit with limited guesses endings
@@ -284,18 +284,18 @@ def game_loop(plr, com):
             new_turn = False
             com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
-                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n"*20)
-                print("The computer hit more ships. YOU LOSE!\n"*4)
+                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
+                print("The computer hit more ships. YOU LOSE!\n")
                 print_screen(plr, com)
             if len(plr.hits) < len(com.hits):
-                print("***WIN***WIN***WIN***WIN***WIN***WIN\n"*20)
-                print("YOU WIN!!! You hit the most ships!\n"*4)
+                print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
+                print("YOU WIN!!! You hit the most ships!\n")
                 print_screen(plr, com)
             if len(plr.hits) == len(com.hits):
-                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOR")
+                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
                 print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
                 print(
-                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"*22
+                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"
                     )
                 print_screen(plr, com)
 
