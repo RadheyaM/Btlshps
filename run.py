@@ -17,20 +17,26 @@ def read_input(prompt, min_val: int, max_val: int):
         try:
             entry = int(player_input)
             if entry > max_val:
+                print("**************************************************")
                 print("--Oops...The number you entered is too large!...Oops")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
                     )
+                print("**************************************************\n")
             elif entry < min_val:
+                print("**************************************************")
                 print("--Ooops...The number you entered is too small!...Ooops")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
                     )
+                print("**************************************************\n")
             else:
                 return entry
         except ValueError:
+            print("**************************************************\n")
             print("--Ooops... you didn't enter a number!...Ooops")
             print(f"--Please enter a number between {min_val} & {max_val}.")
+            print("**************************************************\n")
 
 
 def print_screen(plr, com):
@@ -73,11 +79,12 @@ class Battlegrid:
         """print grid to the terminal"""
         if self.opponent == "You":
             # board is spelled as bored, which is deliberate.
-            print(" _COMPUTER'S_BORED_\n")
+            print(">>>>>>>>>>THE COMPUTER's BOARD<<<<<<<<<<<\n")
         else:
-            print(".  _AND_YOUR_BORED_  \n")
+            print(">>>>>>>>>>>>>AND YOU'RE BORED<<<<<<<<<<<<\n")
         for row in self.board:
             print(" ".join(row))
+        print("\n")
 
     def generate_ships(self):
         """generate a list of unique random co-ordinates used to place ships
@@ -164,7 +171,9 @@ def custom_settings():
         The player and computer Battlegrid instances with appropriate
         settings.
     """
-    num_ships = read_input("Enter number of ships between 1 and 10: \n", 1, 10)
+    num_ships = read_input(
+        ">>Enter number of ships between 1 and 10: \n", 1, 10
+        )
     hits_to_win = read_input(
         ">>Enter number of ships hit to win: \n", 1, num_ships
         )
@@ -185,17 +194,19 @@ def help_me():
     """Prints helpful information for the player. Can
     be accessed by pressing h at any time or 3 in the
     start-up menu."""
+    print("**************************************************")
     print("DEFAULT MODE SETTINGS:")
     print("--Grid size of 5 by 5 with 4 ships.")
     print("--100 guesses each.")
-    print("--First to hit all the opponents ships wins.\n")
-    print("--Grid starts top left at co-ordinates: (1, 1)")
+    print("--First to hit all the opponents ships wins.")
+    print("--Grid starts top left at co-ordinates: (1, 1)\n")
     print("CUSTOM MODE SETTINGS:")
     print("--Choose your own settings.\n")
     print("GRID SYMBOLS:")
     print("'SHP' --> A Ship.")
     print("'###' --> A Hit!")
     print("'_X_' --> A Miss!\n")
+    print("**************************************************\n")
 
 
 def game_start_options():
@@ -207,16 +218,19 @@ def game_start_options():
         An int depending on what choice the player made.
 
     """
-    print("--Welcome to Btlshps!")
+    print("Welcome-to-boredome -- Welcome-to-boredome -- Welcome ...\n")
+    print("--Welcome to the kingdom of Boredome, where we play Btlshps!")
     print("--Sink your opponent's ships before they sink yours!")
     print("--To RESTART the game press 'n' at any time.")
-    print("--For HELP press 'h' at any time.")
+    print("--For HELP press 'h' at any time.\n")
     while True:
+        print("****************************************")
         print(">>>Option '1' for default game mode.")
         print(">>>Option '2' for custom game mode. ")
-        print(">>>Option '3' for game mode details.\n")
+        print(">>>Option '3' for game mode details.")
+        print("****************************************\n")
         choice = read_input(
-            "Please enter option number: \n",
+            ">>Please enter option number: \n",
             min_val=1,
             max_val=3
             )
@@ -255,14 +269,14 @@ def game_loop(plr, com):
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!" * 3)
+            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!\n" * 10)
             print_screen(plr, com)
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!" * 3)
+            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!" * 10)
             print_screen(plr, com)
 
         # most ships hit with limited guesses endings
@@ -270,13 +284,19 @@ def game_loop(plr, com):
             new_turn = False
             com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
-                print("The computer hit more ships. YOU LOSE!" * 3)
+                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n"*20)
+                print("The computer hit more ships. YOU LOSE!\n"*4)
                 print_screen(plr, com)
             if len(plr.hits) < len(com.hits):
-                print("YOU WIN!!! You hit the most ships!" * 3)
+                print("***WIN***WIN***WIN***WIN***WIN***WIN\n"*20)
+                print("YOU WIN!!! You hit the most ships!\n"*4)
                 print_screen(plr, com)
             if len(plr.hits) == len(com.hits):
-                print("It's a draw...yawn..." * 3)
+                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOR")
+                print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
+                print(
+                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"*22
+                    )
                 print_screen(plr, com)
 
         # turn summary prints below the boards
