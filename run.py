@@ -267,7 +267,6 @@ def game_loop(plr, com):
 
         # turn summary prints below the boards
         print(
-            "\n",
             f" Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
         com.outcome_message()
