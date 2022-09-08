@@ -22,36 +22,12 @@ def read_int(prompt, min_val: int, max_val: int):
             print(f"Please enter a number between {min_val} & {max_val}")
 
 
-def print_screen(plr, com, game_status):
-    """Prints the game to the terminal.
-
-    Args:
-        plr: the player instance of the Battlegrid class.
-        com: the computer instance of the Battlegrid class.
-        game_status: str: used in logic to decide which computer
-        board to print to the terminal.
-
-    Returns:
-        Nothing directly.  Modifies class instances and prints certain
-        messages during the game.
-    """
-    os.system("clear")
-    game = game_status
-    # show or don't show computer's ships
-    if game == "over":
-        plr.grid_symbols_game_over()
-        com.grid_symbols_game_over()
-    elif game == "in-play":
-        plr.grid_symbols()
-        com.grid_symbols()
-
+def print_screen(plr, com):
+    """Print both grids"""
+    com.grid_symbols()
+    plr.grid_symbols()
     com.print_grid()
-    print("\n")
-
     plr.print_grid()
-    print("\n")
-    if game == "over":
-        print("Click 'Run Program' button for new game.")
 
 
 class Battlegrid:
@@ -63,7 +39,8 @@ class Battlegrid:
         grid_size=5,
         num_of_ships=4,
         hits_to_win=4,
-        guesses_allowed=100
+        guesses_allowed=100, 
+        game_status="in-play"
     ):
         self.size = grid_size
         self.board = [
@@ -72,6 +49,7 @@ class Battlegrid:
         self.ships = num_of_ships
         self.hits_to_win = hits_to_win
         self.guesses_allowed = guesses_allowed
+        self.game_status = game_status
         self.ship_locations = []
         # id of the opposing player
         self.opponent = opponent_name
@@ -174,7 +152,7 @@ def custom_settings():
     Returns:
         The player and computer Battlegrid instances with appropriate
         settings.
-    """ 
+    """
     os.system("clear")
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
     hits_to_win = read_int(
@@ -248,7 +226,7 @@ def game_loop(plr, com):
     new_turn = True
     guesses_made = 0
     os.system("clear")
-    print_screen(plr, com, "in-play")
+    print_screen(plr, com)
 
     while new_turn:
 
@@ -261,7 +239,7 @@ def game_loop(plr, com):
             new_turn = False
             os.system("clear")
             print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
-            print_screen(plr, com, "over")
+            print_screen(plr, com)
             return
 
         # player wins by hit number
@@ -269,25 +247,25 @@ def game_loop(plr, com):
             new_turn = False
             os.system("clear")
             print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
-            return print_screen(plr, com, "over")
+            return print_screen(plr, com)
 
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
             if len(plr.hits) > len(com.hits):
                 os.system("clear")
                 print("The computer hit more ships. YOU LOSE!")
-                return print_screen(plr, com, "over")
+                return print_screen(plr, com)
             if len(plr.hits) < len(com.hits):
                 os.system("clear")
                 print("YOU WIN!!! You hit the most ships!")
-                return print_screen(plr, com, "over")
+                return print_screen(plr, com)
             if len(plr.hits) == len(com.hits):
                 os.system("clear")
                 print("It's a draw...yawn...")
-                return print_screen(plr, com, "over")
+                return print_screen(plr, com)
 
         os.system("clear")
-        print_screen(plr, com, "in-play")
+        print_screen(plr, com)
 
         # turn summary prints below the boards
         print(
