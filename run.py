@@ -2,7 +2,7 @@
 from random import randint
 
 
-def read_int(prompt, min_val: int, max_val: int):
+def read_input(prompt, min_val: int, max_val: int):
     """prompts the player for input and returns a response integer
     between min and max values.  All player input will go through
     this function."""
@@ -10,18 +10,23 @@ def read_int(prompt, min_val: int, max_val: int):
         player_input = input(prompt).strip()
         # option to refresh the game within the terminal
         if player_input.lower() == "n":
-            main()
+            return main()
+        if player_input.lower() == "h":
+            help_me()
+            continue
         try:
             entry = int(player_input)
             if entry > max_val:
-                print("The number you entered is too large. Please try again!")
+                print("--Ooops...The number you entered is too large!...Ooops")
+                print(f"--Please enter a number between {min_val} & {max_val}.")
             elif entry < min_val:
-                print("The number you entered is too small.  Please try again")
+                print("--Ooops...The number you entered is too small!...Ooops")
+                print(f"--Please enter a number between {min_val} & {max_val}.")
             else:
                 return entry
         except ValueError:
-            print("Ooops, you didn't enter a number!")
-            print(f"Please enter a number between {min_val} & {max_val}")
+            print("--Ooops... you didn't enter a number!...Ooops")
+            print(f"--Please enter a number between {min_val} & {max_val}.")
 
 
 def print_screen(plr, com):
@@ -64,9 +69,9 @@ class Battlegrid:
         """print grid to the terminal"""
         if self.opponent == "You":
             # board is spelled as bored, which is deliberate.
-            print("\n", " COMPUTER'S BORED", "\n")
+            print(" _COMPUTER'S_BORED_\n")
         else:
-            print("\n", " AND YOUR BORED  ", "\n")
+            print(".  _AND_YOUR_BORED_  \n")
         for row in self.board:
             print(" ".join(row))
 
@@ -110,11 +115,11 @@ class Battlegrid:
     def player_guess(self) -> int:
         """Get a guess from the player, not allowing duplicate entries"""
         while True:
-            row = read_int("Guess a row: \n", 1, self.size) - 1
-            col = read_int("Guess a column: \n", 1, self.size) - 1
+            row = read_input(">>Guess a row: \n", 1, self.size) - 1
+            col = read_input(">>Guess a column: \n", 1, self.size) - 1
             if (row, col) in self.guesses:
                 print(
-                    f"You already guessed {(row+1, col+1)}. Try again..."
+                    f"--Ooops...You already guessed {(row+1, col+1)}...Ooops"
                 )
             elif (row, col) in self.ship_locations:
                 self.hits.append((row, col))
@@ -142,8 +147,8 @@ class Battlegrid:
     def outcome_message(self):
         """Generates the appropriate feedback based outcome of a guess"""
         if self.guesses[-1] in self.ship_locations:
-            return print(f"{self.opponent} hit a ship!")
-        return print(f"{self.opponent} missed...")
+            return print(f"--AND ... {self.opponent} hit a ship!")
+        return print(f"--AND ... {self.opponent} missed...")
 
 
 def custom_settings():
@@ -155,12 +160,12 @@ def custom_settings():
         The player and computer Battlegrid instances with appropriate
         settings.
     """
-    num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
-    hits_to_win = read_int(
-        "Enter number of ships hit to win: \n", 1, num_ships
+    num_ships = read_input("Enter number of ships between 1 and 10: \n", 1, 10)
+    hits_to_win = read_input(
+        ">>Enter number of ships hit to win: \n", 1, num_ships
         )
-    guesses_allowed = read_int(
-        "Enter number of guesses allowed between 1 and 100: \n", 1, 100
+    guesses_allowed = read_input(
+        ">>Enter number of guesses allowed between 1 and 100: \n", 1, 100
         )
     player_grid = Battlegrid(
          "The Computer", 5, num_ships, hits_to_win, guesses_allowed
@@ -172,6 +177,23 @@ def custom_settings():
     return player_grid, computer_grid
 
 
+def help_me():
+    """Prints helpful information for the player. Can
+    be accessed by pressing h at any time or 3 in the
+    start-up menu."""
+    print("DEFAULT MODE SETTINGS:")
+    print("--Grid size of 5 by 5 with 4 ships.")
+    print("--100 guesses each.")
+    print("--First to hit all the opponents ships wins.\n")
+    print("--Grid starts top left at co-ordinates: (1, 1)")
+    print("CUSTOM MODE SETTINGS:")
+    print("--Choose your own settings.\n")
+    print("GRID SYMBOLS:")
+    print("'SHP' --> A Ship.")
+    print("'###' --> A Hit!")
+    print("'_X_' --> A Miss!\n")
+
+
 def game_start_options():
     """Greets the player at the start of the game
     and prompts them to make a game mode choice or
@@ -181,14 +203,15 @@ def game_start_options():
         An int depending on what choice the player made.
 
     """
-    print("Welcome to Btlshps!")
-    print("Sink your opponent's ships before they sink yours!")
-    print("To restart the game press 'n' at any time.\n")
+    print("--Welcome to Btlshps!")
+    print("--Sink your opponent's ships before they sink yours!")
+    print("--To RESTART the game press 'n' at any time.")
+    print("--For HELP press 'h' at any time.")
     while True:
-        print("--Option '1' for default game mode.")
-        print("--Option '2' for custom game mode. ")
-        print("--Option '3' for game mode details.\n")
-        choice = read_int(
+        print(">>>Option '1' for default game mode.")
+        print(">>>Option '2' for custom game mode. ")
+        print(">>>Option '3' for game mode details.\n")
+        choice = read_input(
             "Please enter option number: \n",
             min_val=1,
             max_val=3
@@ -197,16 +220,8 @@ def game_start_options():
             return 1
         if choice == 2:
             return 2
-        print("DEFAULT MODE SETTINGS:")
-        print("Grid size of 5 by 5 with 4 ships each")
-        print("100 guesses each")
-        print("First to hit all the opponents ships wins\n")
-        print("CUSTOM MODE SETTINGS:")
-        print("Choose your own settings\n")
-        print("GRID SYMBOLS:")
-        print("'SHP' --> A Ship.")
-        print("'###' --> A Hit!")
-        print("'_X_' --> A Miss!\n")
+        if 3 in choice or 'h' in choice:
+            help_me()
 
 
 def game_loop(plr, com):
@@ -236,14 +251,14 @@ def game_loop(plr, com):
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
+            print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!" * 3)
             print_screen(plr, com)
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
-            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
+            print("YOU WIN!!!YOU WIN!!!YOU WIN!!!" * 3)
             print_screen(plr, com)
 
         # most ships hit with limited guesses endings
@@ -251,22 +266,22 @@ def game_loop(plr, com):
             new_turn = False
             com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
-                print("The computer hit more ships. YOU LOSE!")
+                print("The computer hit more ships. YOU LOSE!" * 3)
                 print_screen(plr, com)
             if len(plr.hits) < len(com.hits):
-                print("YOU WIN!!! You hit the most ships!")
+                print("YOU WIN!!! You hit the most ships!" * 3)
                 print_screen(plr, com)
             if len(plr.hits) == len(com.hits):
-                print("It's a draw...yawn...")
+                print("It's a draw...yawn..." * 3)
                 print_screen(plr, com)
 
         # turn summary prints below the boards
         print(
-            f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+            f">>Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
         com.outcome_message()
         print(
-            f"Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
+            f">>Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
         )
         plr.outcome_message()
 
