@@ -187,9 +187,9 @@ def game_start_options():
     print("Sink your opponent's ships before they sink yours!")
     print("To restart the game press 'n' at any time.\n")
     while True:
-        print("--Enter '1' for default game mode.")
-        print("--Enter '2' for custom game mode. ")
-        print("--Enter '3' for game mode details.\n")
+        print("--Option '1' for default game mode.")
+        print("--Option '2' for custom game mode. ")
+        print("--Option '3' for game mode details.\n")
         choice = read_int(
             "Please enter option number: \n",
             min_val=1,
@@ -267,6 +267,7 @@ def game_loop(plr, com):
                 print_screen(plr, com)
 
         # turn summary prints below the boards
+        os.system("clear")
         print(
             f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
