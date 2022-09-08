@@ -1,4 +1,5 @@
 """Code to run the game in the terminal"""
+import os
 from random import randint
 
 
@@ -194,6 +195,7 @@ def game_start_options():
             return 1
         if choice == 2:
             return 2
+        os.system("clear")
         print("DEFAULT MODE SETTINGS:")
         print("Grid size of 5 by 5 with 4 ships each")
         print("100 guesses each")
@@ -232,6 +234,7 @@ def game_loop(plr, com):
         # computer wins by hit number
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
+            os.system("clear")
             com.grid_symbols_game_over()
             print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
             print_screen(plr, com)
@@ -239,6 +242,7 @@ def game_loop(plr, com):
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
+            os.system("clear")
             com.grid_symbols_game_over()
             print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
             print_screen(plr, com)
@@ -246,6 +250,7 @@ def game_loop(plr, com):
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
             new_turn = False
+            os.system("clear")
             com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
                 print("The computer hit more ships. YOU LOSE!")
@@ -259,7 +264,7 @@ def game_loop(plr, com):
 
         # turn summary prints below the boards
         print(
-            f" Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+            f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
         com.outcome_message()
         print(
@@ -274,8 +279,10 @@ def main():
     choices. Start the game loop."""
     choice = game_start_options()
     if choice == 1:
+        os.system("clear")
         plr, com = Battlegrid("The Computer"), Battlegrid("You")
     elif choice == 2:
+        os.system("clear")
         plr, com = custom_settings()
 
     plr.generate_ships()
