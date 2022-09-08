@@ -30,7 +30,7 @@ class Battlegrid:
         opponent_name: str,
         grid_size=5,
         num_of_ships=4,
-        hits_to_win=5,
+        hits_to_win=4,
         guesses_allowed=100
     ):
         self.size = grid_size

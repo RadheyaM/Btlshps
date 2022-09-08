@@ -26,6 +26,7 @@ def print_screen(plr, com, game_status):
         plr.grid_symbols()
         com.grid_symbols()
     print("\n")
+    # board is spelled as bored, which is deliberate.
     print("----THE COMPUTER'S BORED----", "\n")
     com.print_grid()
     print("\n")
@@ -117,6 +118,7 @@ def game_loop(plr, com):
     """
     new_turn = True
     guesses_made = 0
+    os.system("clear")
     print_screen(plr, com, "in-play")
 
     while new_turn:
@@ -138,8 +140,7 @@ def game_loop(plr, com):
             new_turn = False
             os.system("clear")
             print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
-            print_screen(plr, com, "over")
-            return
+            return print_screen(plr, com, "over")
 
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
