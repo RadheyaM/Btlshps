@@ -1,5 +1,4 @@
 """Code to run the game in the terminal"""
-import os
 from random import randint
 
 
@@ -153,7 +152,6 @@ def custom_settings():
         The player and computer Battlegrid instances with appropriate
         settings.
     """
-    os.system("clear")
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
     hits_to_win = read_int(
         "Enter number of ships hit to win: \n", 1, num_ships
@@ -167,7 +165,6 @@ def custom_settings():
     computer_grid = Battlegrid(
          "You", 5, num_ships, hits_to_win, guesses_allowed
         )
-    os.system("clear")
     print("-----CUSTOM SETTINGS CHOSEN-----")
     return player_grid, computer_grid
 
@@ -197,7 +194,6 @@ def game_start_options():
             return 1
         if choice == 2:
             return 2
-        os.system("clear")
         print("DEFAULT MODE SETTINGS:")
         print("Grid size of 5 by 5 with 4 ships each")
         print("100 guesses each")
@@ -227,7 +223,6 @@ def game_loop(plr, com):
     guesses_made = 0
 
     while new_turn:
-        os.system("clear")
         print_screen(plr, com)
 
         com.player_guess()
@@ -237,7 +232,6 @@ def game_loop(plr, com):
         # computer wins by hit number
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
-            os.system("clear")
             com.grid_symbols_game_over()
             print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
             print_screen(plr, com)
@@ -245,7 +239,6 @@ def game_loop(plr, com):
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
-            os.system("clear")
             com.grid_symbols_game_over()
             print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
             print_screen(plr, com)
@@ -253,7 +246,6 @@ def game_loop(plr, com):
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
             new_turn = False
-            os.system("clear")
             com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
                 print("The computer hit more ships. YOU LOSE!")
