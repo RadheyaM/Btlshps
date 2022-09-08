@@ -62,9 +62,9 @@ class Battlegrid:
         """print grid to the terminal"""
         if self.opponent == "You":
             # board is spelled as bored, which is deliberate.
-            print("-------THE COMPUTER'S BORED--------")
+            print("\n", " COMPUTER'S BORED", "\n")
         else:
-            print("-----------AND YOUR BORED----------")
+            print("\n", " AND YOUR BORED  ", "\n")
         for row in self.board:
             print(" ".join(row))
 
@@ -225,10 +225,10 @@ def game_loop(plr, com):
     """
     new_turn = True
     guesses_made = 0
-    os.system("clear")
-    print_screen(plr, com)
 
     while new_turn:
+        os.system("clear")
+        print_screen(plr, com)
 
         com.player_guess()
         plr.computer_guess()
@@ -238,38 +238,37 @@ def game_loop(plr, com):
         if len(plr.hits) == plr.hits_to_win:
             new_turn = False
             os.system("clear")
+            com.grid_symbols_game_over()
             print("YOU LOSE!!! THE COMPUTER BEAT YOU TO IT!!!")
             print_screen(plr, com)
-            return
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             os.system("clear")
+            com.grid_symbols_game_over()
             print("YOU WIN!!!YOU WIN!!!YOU WIN!!!")
-            return print_screen(plr, com)
+            print_screen(plr, com)
 
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
+            new_turn = False
+            os.system("clear")
+            com.grid_symbols_game_over()
             if len(plr.hits) > len(com.hits):
-                os.system("clear")
                 print("The computer hit more ships. YOU LOSE!")
-                return print_screen(plr, com)
+                print_screen(plr, com)
             if len(plr.hits) < len(com.hits):
-                os.system("clear")
                 print("YOU WIN!!! You hit the most ships!")
-                return print_screen(plr, com)
+                print_screen(plr, com)
             if len(plr.hits) == len(com.hits):
-                os.system("clear")
                 print("It's a draw...yawn...")
-                return print_screen(plr, com)
-
-        os.system("clear")
-        print_screen(plr, com)
+                print_screen(plr, com)
 
         # turn summary prints below the boards
         print(
-            f"Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+            "\n",
+            f" Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
             )
         com.outcome_message()
         print(
