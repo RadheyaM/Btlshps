@@ -84,7 +84,7 @@ class Battlegrid:
         """print grid to the terminal"""
         if self.opponent == "You":
             # board is spelled as bored, which is deliberate.
-            print("-------THE COMPUTER'S BORED-------", "\n")
+            print("-------THE COMPUTER'S BORED--------")
         else:
             print("-----------AND YOUR BORED----------")
         for row in self.board:
