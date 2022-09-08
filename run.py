@@ -2,6 +2,7 @@
 import os
 from random import randint
 
+
 def read_int(prompt, min_val: int, max_val: int):
     """prompts the player for input and returns a response integer
     between min and max values.  All player input will go through
@@ -19,6 +20,7 @@ def read_int(prompt, min_val: int, max_val: int):
         except ValueError:
             print("Ooops, you didn't enter a number!")
             print(f"Please enter a number between {min_val} & {max_val}")
+
 
 def print_screen(plr, com, game_status):
     """Prints the game to the terminal.
@@ -42,12 +44,10 @@ def print_screen(plr, com, game_status):
     elif game == "in-play":
         plr.grid_symbols()
         com.grid_symbols()
-    print("\n")
-    # board is spelled as bored, which is deliberate.
-    print("----THE COMPUTER'S BORED----", "\n")
+
     com.print_grid()
     print("\n")
-    print("-------AND YOUR BORED-------", "\n")
+
     plr.print_grid()
     print("\n")
     if game == "over":
@@ -82,6 +82,11 @@ class Battlegrid:
 
     def print_grid(self):
         """print grid to the terminal"""
+        if self.opponent == "You":
+            # board is spelled as bored, which is deliberate.
+            print("-------THE COMPUTER'S BORED-------", "\n")
+        else:
+            print("-----------AND YOUR BORED----------")
         for row in self.board:
             print(" ".join(row))
 
