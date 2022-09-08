@@ -9,6 +9,10 @@ def read_int(prompt, min_val: int, max_val: int):
     this function."""
     while True:
         player_input = input(prompt).strip()
+        # option to refresh the game within the terminal
+        if player_input.lower() == "n":
+            os.system("clear")
+            main()
         try:
             entry = int(player_input)
             if entry > max_val:
@@ -23,7 +27,7 @@ def read_int(prompt, min_val: int, max_val: int):
 
 
 def print_screen(plr, com):
-    """Print both grids"""
+    """Print both grids with symbols"""
     com.grid_symbols()
     plr.grid_symbols()
     com.print_grid()
@@ -181,7 +185,7 @@ def game_start_options():
     """
     print("Welcome to Btlshps!")
     print("Sink your opponent's ships before they sink yours!")
-    print("To quit just refresh the page at any time.\n")
+    print("To restart the game press 'n' at any time.\n")
     while True:
         print("--Enter '1' for default game mode.")
         print("--Enter '2' for custom game mode. ")
