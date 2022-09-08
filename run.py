@@ -5,7 +5,18 @@ from board_class import read_int
 
 
 def print_screen(plr, com, game_status):
-    """Prints the game to terminal"""
+    """Prints the game to the terminal.
+
+    Args:
+        plr: the player instance of the Battlegrid class.
+        com: the computer instance of the Battlegrid class.
+        game_status: str: used in logic to decide which computer
+        board to print to the terminal.
+
+    Returns:
+        Nothing directly.  Modifies class instances and prints certain
+        messages during the game.
+    """
     game = game_status
     # show or don't show computer's ships
     if game == "over":
@@ -27,7 +38,13 @@ def print_screen(plr, com, game_status):
 
 def custom_settings():
     """Allows the player to set the size of the board,
-    the number of guesses, and win conditions"""
+    the number of guesses, and first to hit certain number
+    of ships wins.
+
+    Returns:
+        The player and computer Battlegrid instances with appropriate
+        settings.
+    """ 
     os.system("clear")
     num_ships = read_int("Enter number of ships between 1 and 10: \n", 1, 10)
     hits_to_win = read_int(
@@ -47,8 +64,15 @@ def custom_settings():
     return player_grid, computer_grid
 
 
-def game_start_options() -> int:
-    """Greeting message and choose game mode"""
+def game_start_options():
+    """Greets the player at the start of the game
+    and prompts them to make a game mode choice or
+    see game mode details.
+
+    Returns:
+        An int depending on what choice the player made.
+
+    """
     print("Welcome to Btlshps!")
     print("Sink your opponent's ships before they sink yours!")
     print("To quit just refresh the page at any time.\n")
@@ -79,7 +103,18 @@ def game_start_options() -> int:
 
 
 def game_loop(plr, com):
-    """Run the game loop"""
+    """Run the game loop and print the boards.
+    Check if win conditions have been met after each round of guessing.
+    Display the turn log and guess outcomes.
+
+    Args:
+        plr: the player instance of the Battlegrid class.
+        com: the computer instance of the Battlegrid class.
+
+    Returns:
+        Runs in a loop until a win condition is met then returns
+        the appropriate end of game screen.
+    """
     new_turn = True
     guesses_made = 0
     print_screen(plr, com, "in-play")
@@ -111,13 +146,15 @@ def game_loop(plr, com):
             if len(plr.hits) > len(com.hits):
                 os.system("clear")
                 print("The computer hit more ships. YOU LOSE!")
+                return print_screen(plr, com, "over")
             if len(plr.hits) < len(com.hits):
                 os.system("clear")
                 print("YOU WIN!!! You hit the most ships!")
+                return print_screen(plr, com, "over")
             if len(plr.hits) == len(com.hits):
                 os.system("clear")
                 print("It's a draw...yawn...")
-            print_screen(plr, com, "over")
+                return print_screen(plr, com, "over")
 
         os.system("clear")
         print_screen(plr, com, "in-play")
@@ -135,7 +172,8 @@ def game_loop(plr, com):
 
 def main():
     """start the game and apply settings based on player
-    choice"""
+    choice. Generate ships on each board according to settings
+    choices. Start the game loop."""
     choice = game_start_options()
     if choice == 1:
         plr, com = Battlegrid("The Computer"), Battlegrid("You")
