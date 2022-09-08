@@ -31,7 +31,7 @@ def print_screen(plr, com, game_status):
     print("----THE COMPUTER'S BORED----", "\n")
     com.print_grid()
     print("\n")
-    print("------AND YOUR BORED-------", "\n")
+    print("-------AND YOUR BORED-------", "\n")
     plr.print_grid()
     print("\n")
     if game == "over":

@@ -93,8 +93,8 @@ class Battlegrid:
     def player_guess(self) -> int:
         """Get a guess from the player, not allowing duplicate entries"""
         while True:
-            row = read_int("Guess a row: ", 1, self.size) - 1
-            col = read_int("Guess a column: ", 1, self.size) - 1
+            row = read_int("Guess a row: \n", 1, self.size) - 1
+            col = read_int("Guess a column: \n", 1, self.size) - 1
             if (row, col) in self.guesses:
                 print(
                     f"You already guessed {(row+1, col+1)}. Try again..."
