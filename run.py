@@ -242,6 +242,19 @@ def game_start_options():
             help_me()
 
 
+def game_log(plr, com):
+    """Description for how a turn of guessing went"""
+    print(
+        f">>Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
+    )
+    com.outcome_message()
+    print(
+        f">>Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
+    )
+    plr.outcome_message()
+    print_screen(plr, com)
+
+
 def game_loop(plr, com):
     """Run the game loop and print the boards.
     Check if win conditions have been met after each round of guessing.
@@ -257,10 +270,10 @@ def game_loop(plr, com):
     """
     new_turn = True
     guesses_made = 0
+    print_screen(plr, com)
 
     while new_turn:
-        print_screen(plr, com)
-
+        
         com.player_guess()
         plr.computer_guess()
         guesses_made += 1
@@ -270,14 +283,18 @@ def game_loop(plr, com):
             new_turn = False
             com.grid_symbols_game_over()
             print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
-            print_screen(plr, com)
+            game_log(plr, com)
+            print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
+            return
 
         # player wins by hit number
         if len(com.hits) == plr.hits_to_win:
             new_turn = False
             com.grid_symbols_game_over()
             print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
-            print_screen(plr, com)
+            game_log(plr, com)
+            print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
+            return
 
         # most ships hit with limited guesses endings
         if guesses_made == plr.guesses_allowed:
@@ -286,28 +303,33 @@ def game_loop(plr, com):
             if len(plr.hits) > len(com.hits):
                 print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
                 print("The computer hit more ships. YOU LOSE!\n")
-                print_screen(plr, com)
+                game_log(plr, com)
+                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
+                print("The computer hit more ships. YOU LOSE!\n")
+                return
             if len(plr.hits) < len(com.hits):
                 print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
                 print("YOU WIN!!! You hit the most ships!\n")
-                print_screen(plr, com)
+                game_log(plr, com)
+                print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
+                print("YOU WIN!!! You hit the most ships!\n")
+                return
             if len(plr.hits) == len(com.hits):
                 print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
                 print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
                 print(
                     "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"
                     )
-                print_screen(plr, com)
+                game_log(plr, com)
+                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
+                print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
+                print(
+                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"
+                    )
+                return
 
         # turn summary prints below the boards
-        print(
-            f">>Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
-            )
-        com.outcome_message()
-        print(
-            f">>Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
-        )
-        plr.outcome_message()
+        game_log(plr, com)
 
 
 def main():
