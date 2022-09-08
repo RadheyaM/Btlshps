@@ -17,6 +17,7 @@ def print_screen(plr, com, game_status):
         Nothing directly.  Modifies class instances and prints certain
         messages during the game.
     """
+    os.system("clear")
     game = game_status
     # show or don't show computer's ships
     if game == "over":
