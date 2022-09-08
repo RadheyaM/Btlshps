@@ -17,11 +17,15 @@ def read_input(prompt, min_val: int, max_val: int):
         try:
             entry = int(player_input)
             if entry > max_val:
-                print("--Ooops...The number you entered is too large!...Ooops")
-                print(f"--Please enter a number between {min_val} & {max_val}.")
+                print("--Oops...The number you entered is too large!...Oops")
+                print(
+                    f"--Please enter a number between {min_val} & {max_val}."
+                    )
             elif entry < min_val:
                 print("--Ooops...The number you entered is too small!...Ooops")
-                print(f"--Please enter a number between {min_val} & {max_val}.")
+                print(
+                    f"--Please enter a number between {min_val} & {max_val}."
+                    )
             else:
                 return entry
         except ValueError:
@@ -220,7 +224,7 @@ def game_start_options():
             return 1
         if choice == 2:
             return 2
-        if 3 in choice or 'h' in choice:
+        if choice == 3:
             help_me()
 
 
