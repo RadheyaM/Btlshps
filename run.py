@@ -33,7 +33,7 @@ def read_input(prompt, min_val: int, max_val: int):
             else:
                 return entry
         except ValueError:
-            print("**************************************************\n")
+            print("**************************************************")
             print("--Ooops... you didn't enter a number!...")
             print(f"--Please enter a number between {min_val} & {max_val}.")
             print("**************************************************\n")
@@ -265,8 +265,8 @@ def game_log(plr, com):
 
 def final_score(score_type, plr, com):
     """Displays the appropriate message and score at the end of a game"""
-    loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***\n"
-    winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***\n"
+    loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***"
+    winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***"
     luck = "Better luck next time.  We know you can beat the computer!"
     com_hits = len(plr.hits)
     plr_hits = len(com.hits)
@@ -278,7 +278,7 @@ def final_score(score_type, plr, com):
         print(winner)
     elif score_type == 3:
         print(loser)
-        print("The computer hit more ships within the guess limit!\n")
+        print("The computer hit more ships within the guess limit!")
         print(luck)
     elif score_type == 4:
         print(winner)
@@ -287,7 +287,7 @@ def final_score(score_type, plr, com):
         print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
         print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
         print(
-            "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***YOU DREW***\n"
+            "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***YOU DREW***"
         )
 
     print("*********************************************************")
@@ -295,7 +295,7 @@ def final_score(score_type, plr, com):
     print("*********************************************************")
     print("Scroll up to see final board positions.")
     print("Hit 'R' to play a new game!")
-    read_input(">>: ", 0, 0)
+    read_input(">>: \n", 0, 0)
 
 
 def win_conditions(plr, com) -> bool:
