@@ -2,13 +2,12 @@
 from random import randint
 
 
-def read_input(prompt, min_val: int, max_val: int):
+def read_input(prompt, min_val: int, max_val: int, game_over=False):
     """prompts the player for input and returns a response integer
     between min and max values.  All player input will go through
     this function."""
     while True:
         player_input = input(prompt).strip()
-        # option to refresh the game within the terminal
         if player_input.lower() == "r":
             return main()
         if player_input.lower() == "h":
@@ -16,6 +15,11 @@ def read_input(prompt, min_val: int, max_val: int):
             continue
         try:
             entry = int(player_input)
+            if game_over:
+                print("**************************************************")
+                print("Please enter 'R' for a NEW GAME or 'H' for HELP")
+                print("**************************************************\n")
+                continue
             if entry > max_val:
                 print("**************************************************")
                 print("--Oops...The number you entered is too large!...")
@@ -295,7 +299,7 @@ def final_score(score_type, plr, com):
     print("*********************************************************")
     print("Scroll up to see final board positions.")
     print("Hit 'R' to play a new game!")
-    read_input(">>: \n", 0, 0)
+    read_input(">>: \n", 0, 0, True)
 
 
 def win_conditions(plr, com) -> bool:
