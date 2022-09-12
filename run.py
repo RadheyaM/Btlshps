@@ -9,7 +9,7 @@ def read_input(prompt, min_val: int, max_val: int):
     while True:
         player_input = input(prompt).strip()
         # option to refresh the game within the terminal
-        if player_input.lower() == "n":
+        if player_input.lower() == "r":
             return main()
         if player_input.lower() == "h":
             help_me()
@@ -18,14 +18,14 @@ def read_input(prompt, min_val: int, max_val: int):
             entry = int(player_input)
             if entry > max_val:
                 print("**************************************************")
-                print("--Oops...The number you entered is too large!...Oops")
+                print("--Oops...The number you entered is too large!...")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
                     )
                 print("**************************************************\n")
             elif entry < min_val:
                 print("**************************************************")
-                print("--Ooops...The number you entered is too small!...Ooops")
+                print("--Ooops...The number you entered is too small!...")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
                     )
@@ -34,7 +34,7 @@ def read_input(prompt, min_val: int, max_val: int):
                 return entry
         except ValueError:
             print("**************************************************\n")
-            print("--Ooops... you didn't enter a number!...Ooops")
+            print("--Ooops... you didn't enter a number!...")
             print(f"--Please enter a number between {min_val} & {max_val}.")
             print("**************************************************\n")
 
@@ -130,7 +130,7 @@ class Battlegrid:
             col = read_input(">>Guess a column: \n", 1, self.size) - 1
             if (row, col) in self.guesses:
                 print(
-                    f"--Ooops...You already guessed {(row+1, col+1)}...Ooops"
+                    f"--Ooops, you already guessed {(row+1, col+1)}, try again"
                 )
             elif (row, col) in self.ship_locations:
                 self.hits.append((row, col))
@@ -219,10 +219,12 @@ def game_start_options():
 
     """
     print("Welcome-to-boredome -- Welcome-to-boredome -- Welcome ...\n")
-    print("--Welcome to the kingdom of Boredome, where we play Btlshps!")
+    print(
+        "--Welcome to the kingdom of Boredome, where we play Btlshps!"
+        )
     print("--Sink your opponent's ships before they sink yours!")
-    print("--To RESTART the game press 'n' at any time.")
-    print("--For HELP press 'h' at any time.\n")
+    print("--To RESTART the game press 'R' at any time.")
+    print("--For HELP press 'H' at any time.\n")
     while True:
         print("****************************************")
         print(">>>Option '1' for default game mode.")
@@ -255,10 +257,71 @@ def game_log(plr, com):
     print_screen(plr, com)
 
 
+def final_score(score_type, plr, com):
+    """Displays the appropriate message and score at the end of a game"""
+    loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***\n"
+    winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***\n"
+    luck = "Better luck next time.  We know you can beat the computer!"
+    if score_type == 1:
+        print(loser)
+        print(luck)
+    elif score_type == 2:
+        print(winner)
+    elif score_type == 3:
+        print(loser)
+        print("The computer hit more ships within the guess limit!\n")
+        print(luck)
+    elif score_type == 4:
+        print(winner)
+        print("You hit more ships than the computer within the guess limit!")
+    elif score_type == 5:
+        print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
+        print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
+        print(
+            "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***YOU DREW***\n"
+        )
+
+    print("*********************************************************")
+    print(f"-- Final Score is Computer: {plr.hits}, Player: {com.hits}")
+    print("*********************************************************")
+    print("Hit 'R' to play a new game!")
+
+
+def win_conditions(plr, com, guesses_made):
+    """Checks for win conditions after every guess."""
+    # computer wins by hit number
+    if len(plr.hits) == plr.hits_to_win:
+        com.grid_symbols_game_over()
+        final_score(1, plr, com)
+        game_log(plr, com)
+        return
+
+    # player wins by hit number
+    if len(com.hits) == plr.hits_to_win:
+        com.grid_symbols_game_over()
+        final_score(2, plr, com)
+        game_log(plr, com)
+        return
+
+    # most ships hit with limited guesses endings
+    if guesses_made == plr.guesses_allowed:
+        com.grid_symbols_game_over()
+        if len(plr.hits) > len(com.hits):
+            final_score(3, plr, com)
+            game_log(plr, com)
+            return
+        if len(plr.hits) < len(com.hits):
+            final_score(4, plr, com)
+            game_log(plr, com)
+            return
+        if len(plr.hits) == len(com.hits):
+            final_score(5, plr, com)
+            game_log(plr, com)
+            return
+
+
 def game_loop(plr, com):
     """Run the game loop and print the boards.
-    Check if win conditions have been met after each round of guessing.
-    Display the turn log and guess outcomes.
 
     Args:
         plr: the player instance of the Battlegrid class.
@@ -273,62 +336,11 @@ def game_loop(plr, com):
     print_screen(plr, com)
 
     while new_turn:
-        
         com.player_guess()
+        win_conditions(plr, com, guesses_made)
         plr.computer_guess()
+        win_conditions(plr, com, guesses_made)
         guesses_made += 1
-
-        # computer wins by hit number
-        if len(plr.hits) == plr.hits_to_win:
-            new_turn = False
-            com.grid_symbols_game_over()
-            print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
-            game_log(plr, com)
-            print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
-            return
-
-        # player wins by hit number
-        if len(com.hits) == plr.hits_to_win:
-            new_turn = False
-            com.grid_symbols_game_over()
-            print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
-            game_log(plr, com)
-            print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
-            return
-
-        # most ships hit with limited guesses endings
-        if guesses_made == plr.guesses_allowed:
-            new_turn = False
-            com.grid_symbols_game_over()
-            if len(plr.hits) > len(com.hits):
-                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
-                print("The computer hit more ships. YOU LOSE!\n")
-                game_log(plr, com)
-                print("***LOSER***LOSER***LOSER***LOSER***LOSER\n")
-                print("The computer hit more ships. YOU LOSE!\n")
-                return
-            if len(plr.hits) < len(com.hits):
-                print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
-                print("YOU WIN!!! You hit the most ships!\n")
-                game_log(plr, com)
-                print("***WIN***WIN***WIN***WIN***WIN***WIN\n")
-                print("YOU WIN!!! You hit the most ships!\n")
-                return
-            if len(plr.hits) == len(com.hits):
-                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
-                print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
-                print(
-                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"
-                    )
-                game_log(plr, com)
-                print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
-                print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
-                print(
-                    "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***\n"
-                    )
-                return
-
-        # turn summary prints below the boards
         game_log(plr, com)
 
 
