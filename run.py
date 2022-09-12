@@ -39,8 +39,14 @@ def read_input(prompt, min_val: int, max_val: int):
             print("**************************************************\n")
 
 
-def print_screen(plr, com):
+def print_screen(plr, com, game_over):
     """Print both grids with symbols"""
+    if game_over:
+        com.grid_symbols_game_over()
+        plr.grid_symbols_game_over()
+        com.print_grid()
+        plr.print_grid()
+        return
     com.grid_symbols()
     plr.grid_symbols()
     com.print_grid()
@@ -254,7 +260,7 @@ def game_log(plr, com):
         f">>Computer guess: {(plr.guesses[-1][0]+1, plr.guesses[-1][1]+1)}"
     )
     plr.outcome_message()
-    print_screen(plr, com)
+    print_screen(plr, com, False)
 
 
 def final_score(score_type, plr, com):
@@ -262,6 +268,9 @@ def final_score(score_type, plr, com):
     loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***\n"
     winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***\n"
     luck = "Better luck next time.  We know you can beat the computer!"
+    com_hits = len(plr.hits)
+    plr_hits = len(com.hits)
+    print_screen(plr, com, True)
     if score_type == 1:
         print(loser)
         print(luck)
@@ -282,42 +291,42 @@ def final_score(score_type, plr, com):
         )
 
     print("*********************************************************")
-    print(f"-- Final Score is Computer: {plr.hits}, Player: {com.hits}")
+    print(f"-- Final Score is Computer: {com_hits}, Player: {plr_hits}")
     print("*********************************************************")
+    print("Scroll up to see final board positions.")
     print("Hit 'R' to play a new game!")
+    read_input(">>: ", 0, 0)
 
 
-def win_conditions(plr, com, guesses_made):
+def win_conditions(plr, com) -> bool:
     """Checks for win conditions after every guess."""
+    guesses = plr.guesses_allowed
+    c_guess_num = len(plr.guesses)
+    p_guess_num = len(com.guesses)
     # computer wins by hit number
     if len(plr.hits) == plr.hits_to_win:
-        com.grid_symbols_game_over()
         final_score(1, plr, com)
-        game_log(plr, com)
-        return
+        return False
 
     # player wins by hit number
     if len(com.hits) == plr.hits_to_win:
         com.grid_symbols_game_over()
         final_score(2, plr, com)
-        game_log(plr, com)
-        return
+        return False
 
     # most ships hit with limited guesses endings
-    if guesses_made == plr.guesses_allowed:
+    if guesses == c_guess_num and guesses == p_guess_num:
         com.grid_symbols_game_over()
         if len(plr.hits) > len(com.hits):
             final_score(3, plr, com)
-            game_log(plr, com)
-            return
+            return False
         if len(plr.hits) < len(com.hits):
             final_score(4, plr, com)
-            game_log(plr, com)
-            return
+            return False
         if len(plr.hits) == len(com.hits):
             final_score(5, plr, com)
-            game_log(plr, com)
-            return
+            return False
+    return True
 
 
 def game_loop(plr, com):
@@ -332,16 +341,16 @@ def game_loop(plr, com):
         the appropriate end of game screen.
     """
     new_turn = True
-    guesses_made = 0
-    print_screen(plr, com)
+    print_screen(plr, com, False)
 
     while new_turn:
         com.player_guess()
-        win_conditions(plr, com, guesses_made)
-        plr.computer_guess()
-        win_conditions(plr, com, guesses_made)
-        guesses_made += 1
-        game_log(plr, com)
+        new_turn = win_conditions(plr, com)
+        if new_turn:
+            plr.computer_guess()
+            new_turn = win_conditions(plr, com)
+            if new_turn:
+                game_log(plr, com)
 
 
 def main():
