@@ -1,13 +1,27 @@
-"""Code to run the game in the terminal"""
+"""Code to run a battleships game in a simulated terminal on Heroku"""
 from random import randint
 
 
 def read_input(prompt, min_val: int, max_val: int, game_over=False):
     """prompts the player for input and returns a response integer
-    between min and max values.  All player input will go through
-    this function."""
+    between min and max values.  All player input goes through
+    this function.
+
+    Args:
+        prompt: str: context for player input.
+        min_val: int: the minimum value that can be entered.
+        max_val: The maximum value that can be entered.
+        game_over: bool: triggers custom printout on game over.
+
+    Returns:
+        When guessing during the game returns int within certain params.
+        Otherwise triggers other in terminal actions such as printing
+        help_me etc.
+    """
     while True:
+        # remove spaces surrounding input if any.
         player_input = input(prompt).strip()
+        # restart and help:
         if player_input.lower() == "r":
             return main()
         if player_input.lower() == "h":
@@ -17,7 +31,7 @@ def read_input(prompt, min_val: int, max_val: int, game_over=False):
             entry = int(player_input)
             if game_over:
                 print("**************************************************")
-                print("Please enter 'R' for a NEW GAME or 'H' for HELP")
+                print("--Please enter 'R' for NEW GAME or 'H' for HELP")
                 print("**************************************************\n")
                 continue
             if entry > max_val:
@@ -58,7 +72,7 @@ def print_screen(plr, com, game_over):
 
 
 class Battlegrid:
-    """A class defining the battleship board grid for the player
+    """A class defining the battleship board/grid for the player
     and computer"""
     def __init__(
         self,
@@ -179,7 +193,7 @@ def custom_settings():
 
     Returns:
         The player and computer Battlegrid instances with appropriate
-        settings.
+        settings applied.
     """
     num_ships = read_input(
         ">>Enter number of ships between 1 and 10: \n", 1, 10
@@ -202,7 +216,7 @@ def custom_settings():
 
 def help_me():
     """Prints helpful information for the player. Can
-    be accessed by pressing h at any time or 3 in the
+    be accessed by pressing 'h' at any time (except end of game) or '3' in the
     start-up menu."""
     print("**************************************************")
     print("DEFAULT MODE SETTINGS:")
@@ -233,8 +247,8 @@ def game_start_options():
         "--Welcome to the kingdom of Boredome, where we play Btlshps!"
         )
     print("--Sink your opponent's ships before they sink yours!")
-    print("--To RESTART the game press 'R' at any time.")
-    print("--For HELP press 'H' at any time.\n")
+    print("--To RESTART the game press 'R'.")
+    print("--For HELP press 'H'.\n")
     while True:
         print("****************************************")
         print(">>>Option '1' for default game mode.")
@@ -255,7 +269,16 @@ def game_start_options():
 
 
 def game_log(plr, com):
-    """Description for how a turn of guessing went"""
+    """Description for how a turn of guessing went, co-ordinates guessed
+    by computer and player and the outcome of the guess, hit or miss.
+
+    Args:
+        computer and player class instances.
+
+    Returns:
+        Prints out a game log in the terminal.
+
+    """
     print(
         f">>Your guess: {(com.guesses[-1][0]+1, com.guesses[-1][1]+1)}"
     )
@@ -268,7 +291,15 @@ def game_log(plr, com):
 
 
 def final_score(score_type, plr, com):
-    """Displays the appropriate message and score at the end of a game"""
+    """Prints the appropriate message and score at the end of a game
+
+    Args:
+        score_type: int: depends on which win condition is met.
+        computer and player class instances.
+
+    Returns:
+        Prints to terminal.
+    """
     loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***"
     winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***"
     luck = "Better luck next time.  We know you can beat the computer!"
@@ -289,7 +320,7 @@ def final_score(score_type, plr, com):
         print("You hit more ships than the computer within the guess limit!")
     elif score_type == 5:
         print("IN BOREDOME A YAWN IS THE HIGHEST ACHIEVABLE HONOUR")
-        print("ON BEHALF OF ALL BOORES PLEASE ACCEPT A HEARTFELT YAWN")
+        print("ON BEHALF OF ALL BORES PLEASE ACCEPT A HEARTFELT YAWN")
         print(
             "***CONGRATS!***YAWN***YOU DREW***YAWN***CONGRATS!***YOU DREW***"
         )
@@ -303,8 +334,18 @@ def final_score(score_type, plr, com):
 
 
 def win_conditions(plr, com) -> bool:
-    """Checks for win conditions after every guess."""
+    """Checks for win conditions after a guess is made.
+
+    Args:
+        computer and player class instances.
+
+    Returns:
+        bool: returns False if a win condition is met
+        and interupts the game_loop to initiate game over
+        printouts.
+    """
     guesses = plr.guesses_allowed
+    # abbreviated to fit in one line below
     c_guess_num = len(plr.guesses)
     p_guess_num = len(com.guesses)
     # computer wins by hit number
@@ -318,7 +359,7 @@ def win_conditions(plr, com) -> bool:
         final_score(2, plr, com)
         return False
 
-    # most ships hit with limited guesses endings
+    # most ships hit with limited guess settings
     if guesses == c_guess_num and guesses == p_guess_num:
         com.grid_symbols_game_over()
         if len(plr.hits) > len(com.hits):
@@ -342,7 +383,7 @@ def game_loop(plr, com):
 
     Returns:
         Runs in a loop until a win condition is met then returns
-        the appropriate end of game screen.
+        the appropriate end of game message.
     """
     new_turn = True
     print_screen(plr, com, False)
@@ -359,8 +400,8 @@ def game_loop(plr, com):
 
 def main():
     """start the game and apply settings based on player
-    choice. Generate ships on each board according to settings
-    choices. Start the game loop."""
+    choice. Generate ships on each board according to player
+    choices. Initiate the game loop."""
     choice = game_start_options()
     if choice == 1:
         plr, com = Battlegrid("The Computer"), Battlegrid("You")
