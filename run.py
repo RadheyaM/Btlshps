@@ -2,7 +2,12 @@
 from random import randint
 
 
-def read_input(prompt, min_val: int, max_val: int, game_over=False):
+def read_input(
+    prompt,
+    min_val: int,
+    max_val: int,
+    game_over=False
+):
     """prompts the player for input and returns a response integer
     between min and max values.  All player input goes through
     this function.
@@ -19,9 +24,9 @@ def read_input(prompt, min_val: int, max_val: int, game_over=False):
         help_me etc.
     """
     while True:
-        # remove spaces surrounding input if any.
+        # remove spaces surrounding input if any
         player_input = input(prompt).strip()
-        # restart and help:
+        # restart and help
         if player_input.lower() == "r":
             return main()
         if player_input.lower() == "h":
@@ -39,14 +44,14 @@ def read_input(prompt, min_val: int, max_val: int, game_over=False):
                 print("--Oops...The number you entered is too large!...")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
-                    )
+                )
                 print("**************************************************\n")
             elif entry < min_val:
                 print("**************************************************")
                 print("--Ooops...The number you entered is too small!...")
                 print(
                     f"--Please enter a number between {min_val} & {max_val}."
-                    )
+                )
                 print("**************************************************\n")
             else:
                 return entry
@@ -216,7 +221,7 @@ def custom_settings():
 
 def help_me():
     """Prints helpful information for the player. Can
-    be accessed by pressing 'h' at any time (except end of game) or '3' in the
+    be accessed by pressing 'H' in-game or '3' in the
     start-up menu."""
     print("**************************************************")
     print("DEFAULT MODE SETTINGS:")
@@ -302,7 +307,7 @@ def final_score(score_type, plr, com):
     """
     loser = "***LOSER***LOSER***LOSER***LOSER***LOSER***LOSER***"
     winner = "***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***WIN!***"
-    luck = "Better luck next time.  We know you can beat the computer!"
+    luck = "Aww that pesky computer did it again ... better luck next time!"
     com_hits = len(plr.hits)
     plr_hits = len(com.hits)
     print_screen(plr, com, True)
@@ -401,7 +406,13 @@ def game_loop(plr, com):
 def main():
     """start the game and apply settings based on player
     choice. Generate ships on each board according to player
-    choices. Initiate the game loop."""
+    choices. Initiate the game loop or return to game loop
+    from help menu.
+
+    Return:
+        Initiates the game loop.
+
+    """
     choice = game_start_options()
     if choice == 1:
         plr, com = Battlegrid("The Computer"), Battlegrid("You")
