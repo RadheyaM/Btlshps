@@ -418,8 +418,7 @@ def game_loop(plr, com) -> None:
 def main() -> None:
     """start the game and apply settings based on player
     choice. Generate ships on each board according to player
-    choices. Initiate the game loop or return to game loop
-    from help menu.
+    choices. Initiate the game loop.
 
     Return:
         Initiates the game loop.
