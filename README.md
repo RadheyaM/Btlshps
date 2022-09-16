@@ -14,14 +14,17 @@ As a user I want to play battleships, I want it to work and be entertaining with
 
 ### Intro
 The player is greeted and made to feel welcome.  Instructions are clearly given and a choice can be made.
+
 ![Intro Screen](readme-images/greeting-message.png)
 
 ### Custom Settings
 With the custom settings option the player can choose the number of ships, the number of hits to win and the total guesses allowed each.
+
 ![Custom Settings](readme-images/custom-settings.png)
 
 ### Game Board
 A board is displayed for the computer and the player.  The player's ships are visible while the computer's are not.  A witty pun is deployed.
+
 ![Board](readme-images/board.png)
 
 ### Guessing
