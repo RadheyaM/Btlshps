@@ -6,15 +6,58 @@
 
 The player and computer make guesses (random in the computer's case) to try to hit the opponent's ships first, custom settings can be applied increasing or decreasing the number of ships on the grid, ships hit to win and a guess limit.
 
-## Table of Contents
+As a user I want to play battleships, I want it to work and be entertaining within its scope (how entertaining can a battleships game be?), I want clear instructions on how to play the game, and I want feedback on my actions.  The project has been developed with these objectives in mind.
 
-## Planning
+## Table of Contents
 
 ## Features
 
-### feature1
-### feature2
-### etc...
+### Intro
+The player is greeted and made to feel welcome.  Instructions are clearly given and a choice can be made.
+![Intro Screen](readme-images/greeting-message.png)
+
+### Custom Settings
+With the custom settings option the player can choose the number of ships, the number of hits to win and the total guesses allowed each.
+![Custom Settings](readme-images/custom-settings.png)
+
+### Game Board
+A board is displayed for the computer and the player.  The player's ships are visible while the computer's are not.  A witty pun is deployed.
+![Board](readme-images/board.png)
+
+### Guessing
+The player enters a guess for row and column in order to try and hit a hidden ship.  _X_ stands for a miss, ### for a hit and SHP is a ship which has not yet been hit.  The player can figure this out from context or press 'H' for help, which is up to them.
+
+![Guessing](readme-images/mid-game.png)
+
+If they do not enter a number they are prompted to retry...
+
+![Not a number](readme-images/not-a-number.png)
+
+If they did not enter a number between the correct range of 1 and 5 they are prompted accordingly...
+
+![Not the right size](readme-images/data-validation-two.png)
+
+If they already guessed the co-ordinates they are made to retry, duplicates are not accepted...
+
+![You already guessed](readme-images/already-guessed.png)
+
+A successful guess is followed by a random computer guess, and the board is updated... a game log with the results is printed above the updated board.
+
+![After a guess](readme-images/after-a-guess.png)
+
+### Help
+The player can access help by pressing 'H' as instructed at the start of the game.  Upon pressing 'H' in-game the following info-block is printed:
+
+![Help](readme-images/help.png)
+
+### Game Over
+The player can either win, lose or draw.  Drawing is only possible if there is a custom guess limit reached while both player and computer have hit the same number of ships each.  Below the final score there is an option to either start a new game or to quit.
+
+![Win](readme-images/win.png)
+
+![Draw](readme-images/draw.png)
+
+![Loser](readme-images/loser.png)
 
 ## Game Logic Overview
 ### Game Start and Choosing Settings
@@ -36,13 +79,13 @@ The player and computer make guesses (random in the computer's case) to try to h
  - Code: [Python 3.8.11](https://www.python.org/)
  - [Git](https://git-scm.com/) - for version control.
  - [Github](https://github.com/) - repository to store the project files and host/share the project.
- - [Heroku](https://www.heroku.com/platform) - to deploy the simulated python terminal environment on which the file executes. 
+ - [Heroku](https://www.heroku.com/platform) - to deploy the simulated python terminal environment in which the file executes. 
 
 ## Testing
 
 Python PEP8 Validator - All right.
 
-![Validator Result]()
+![Validator Result](readme-images/validator-result.png)
 
 ## Deployment
 ### Heroku
