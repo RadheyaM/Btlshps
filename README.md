@@ -1,4 +1,4 @@
-# BTLSHPS: A Python Terminal battleships game
+# BTLSHPS: A Python Terminal Battleships Game
 
 [Live Site](https://btlshps.herokuapp.com/)
 
@@ -88,13 +88,19 @@ The player can either win, lose or draw.  Drawing is only possible if there is a
  - Code: [Python 3.8.11](https://www.python.org/)
  - [Git](https://git-scm.com/) - for version control.
  - [Github](https://github.com/) - repository to store the project files and host/share the project.
- - [Heroku](https://www.heroku.com/platform) - to deploy the simulated python terminal environment in which the file executes. 
+ - [Heroku](https://www.heroku.com/platform) - to deploy the simulated python terminal environment in a browser. 
 
 ## Testing
+
+### Python Validator
 
 Python PEP8 Validator - All right.
 
 ![Validator Result](readme-images/validator-result.png)
+
+### Stress Testing and Bugs
+The game has been run in terminal and on Heroku many times to test different outcomes and detect bugs.  No serious game-breaking bugs have been found during this testing that were not fixed during development and recorded in the git commits.
+
 
 ## Deployment
 ### Heroku
