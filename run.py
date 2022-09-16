@@ -31,9 +31,9 @@ class Battlegrid:
     def print_grid(self):
         """print grid to the terminal"""
         if self.opponent == "You":
-            # board is spelled as bored, which is deliberate.
             print(">>>>>>>>>>THE COMPUTER's BOARD<<<<<<<<<<<\n")
         else:
+            # board is spelled as bored deliberately.
             print(">>>>>>>>>>>>>AND YOU'RE BORED<<<<<<<<<<<<\n")
         for row in self.board:
             print(" ".join(row))
@@ -47,7 +47,7 @@ class Battlegrid:
         while loops < self.ships:
             row = randint(0, self.size - 1)
             col = randint(0, self.size - 1)
-            # check for duplicates, don't add if so
+            # screen for duplicates
             if (row, col) in locs:
                 continue
             locs.append((row, col))
@@ -77,7 +77,7 @@ class Battlegrid:
                 self.board[guess[0]][guess[1]] = "_X_"
 
     def player_guess(self) -> int:
-        """Get a guess from the player, not allowing duplicate entries"""
+        """Get a guess from the player, screening for duplicate entries"""
         while True:
             row = read_input(">>Guess a row: \n", 1, self.size) - 1
             col = read_input(">>Guess a column: \n", 1, self.size) - 1
