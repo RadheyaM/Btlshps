@@ -33,8 +33,19 @@ The player and computer make guesses (random in the computer's case) to try to h
 
 ## Technologies Used
 
+ - Code: [Python 3.8.11](https://www.python.org/)
+ - [Git](https://git-scm.com/) - for version control.
+ - [Github](https://github.com/) - repository to store the project files and host/share the project.
+ - [Heroku](https://www.heroku.com/platform) - to deploy the simulated python terminal environment on which the file executes. 
+
 ## Testing
 
-## Deployment
+Python PEP8 Validator - All right.
 
+![Validator Result]()
+
+## Deployment
+### Heroku
+[How Heroku Works](https://www.heroku.com/platform#platform-diagram-detail)
 ## Credits
+Thanks to Brian Macharia for his help through-out. Thanks to Code institute for the learning materials. Thanks to various YouTube creators for inspiration.
