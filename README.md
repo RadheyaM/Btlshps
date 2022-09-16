@@ -9,8 +9,14 @@ The player and computer make guesses (random in the computer's case) to try to h
 As a user I want to play battleships, I want it to work and be entertaining within its scope (how entertaining can a battleships game be?), I want clear instructions on how to play the game, and I want feedback on my actions.  The project has been developed with these objectives in mind.
 
 ## Table of Contents
-
+    - [Features](#features)
+    - [Game Logic Overview](#game-logic-overview)
+    - [Technologies Used](#technologies-used)
+    - [Testing](#testing)
+    - [Deployment](#deployment)
+    - [Credits](#credits)
 ## Features
+
 
 ### Intro
 The player is greeted and made to feel welcome.  Instructions are clearly given and a choice can be made.
