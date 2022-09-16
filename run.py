@@ -2,80 +2,6 @@
 from random import randint
 
 
-def read_input(
-    prompt,
-    min_val: int,
-    max_val: int,
-    game_over=False
-):
-    """prompts the player for input and returns a response integer
-    between min and max values.  All player input goes through
-    this function.
-
-    Args:
-        prompt: str: context for player input.
-        min_val: int: the minimum value that can be entered.
-        max_val: The maximum value that can be entered.
-        game_over: bool: triggers custom printout on game over.
-
-    Returns:
-        When guessing during the game returns int within certain params.
-        Otherwise triggers other in terminal actions such as printing
-        help_me etc.
-    """
-    while True:
-        # remove spaces surrounding input if any
-        player_input = input(prompt).strip()
-        # restart and help
-        if player_input.lower() == "r":
-            return main()
-        if player_input.lower() == "h":
-            help_me()
-            continue
-        try:
-            entry = int(player_input)
-            if game_over:
-                print("**************************************************")
-                print("--Please enter 'R' for NEW GAME or 'H' for HELP")
-                print("**************************************************\n")
-                continue
-            if entry > max_val:
-                print("**************************************************")
-                print("--Oops...The number you entered is too large!...")
-                print(
-                    f"--Please enter a number between {min_val} & {max_val}."
-                )
-                print("**************************************************\n")
-            elif entry < min_val:
-                print("**************************************************")
-                print("--Ooops...The number you entered is too small!...")
-                print(
-                    f"--Please enter a number between {min_val} & {max_val}."
-                )
-                print("**************************************************\n")
-            else:
-                return entry
-        except ValueError:
-            print("**************************************************")
-            print("--Ooops... you didn't enter a number!...")
-            print(f"--Please enter a number between {min_val} & {max_val}.")
-            print("**************************************************\n")
-
-
-def print_screen(plr, com, game_over):
-    """Print both grids with symbols"""
-    if game_over:
-        com.grid_symbols_game_over()
-        plr.grid_symbols_game_over()
-        com.print_grid()
-        plr.print_grid()
-        return
-    com.grid_symbols()
-    plr.grid_symbols()
-    com.print_grid()
-    plr.print_grid()
-
-
 class Battlegrid:
     """A class defining the battleship board/grid for the player
     and computer"""
@@ -85,8 +11,7 @@ class Battlegrid:
         grid_size=5,
         num_of_ships=4,
         hits_to_win=4,
-        guesses_allowed=100, 
-        game_status="in-play"
+        guesses_allowed=100,
     ):
         self.size = grid_size
         self.board = [
@@ -95,7 +20,6 @@ class Battlegrid:
         self.ships = num_of_ships
         self.hits_to_win = hits_to_win
         self.guesses_allowed = guesses_allowed
-        self.game_status = game_status
         self.ship_locations = []
         # id of the opposing player
         self.opponent = opponent_name
@@ -185,10 +109,92 @@ class Battlegrid:
             loop = False
 
     def outcome_message(self):
-        """Generates the appropriate feedback based outcome of a guess"""
+        """Generates the appropriate feedback based on guess outcome"""
         if self.guesses[-1] in self.ship_locations:
             return print(f"--AND ... {self.opponent} hit a ship!")
         return print(f"--AND ... {self.opponent} missed...")
+
+
+def read_input(
+    prompt,
+    min_val: int,
+    max_val: int,
+    game_over=False
+) -> int:
+    """prompts the player for input and returns a response integer
+    between min and max values.  All player input goes through
+    this function.
+
+    Args:
+        prompt: str: context for player input.
+        min_val: int: the minimum value that can be entered.
+        max_val: The maximum value that can be entered.
+        game_over: bool: triggers custom printout on game over.
+
+    Returns:
+        When guessing during the game returns int within certain params.
+        Otherwise triggers other in-terminal actions such as printing
+        help_me and starting a new game.
+    """
+    while True:
+        # remove spaces surrounding input if any
+        player_input = input(prompt).strip()
+        # restart and help
+        if player_input.lower() == "r":
+            main()
+        if player_input.lower() == "h":
+            help_me()
+            continue
+        try:
+            entry = int(player_input)
+            if game_over:
+                if entry == 1:
+                    main()
+                elif entry == 2:
+                    break
+            if entry > max_val:
+                print("**************************************************")
+                print("--Oops...The number you entered is too large!...")
+                print(
+                    f"--Please enter a number between {min_val} & {max_val}."
+                )
+                print("**************************************************\n")
+            elif entry < min_val:
+                print("**************************************************")
+                print("--Ooops...The number you entered is too small!...")
+                print(
+                    f"--Please enter a number between {min_val} & {max_val}."
+                )
+                print("**************************************************\n")
+            else:
+                return entry
+        except ValueError:
+            print("**************************************************")
+            print("--Ooops... you didn't enter a number!...")
+            print(f"--Please enter a number between {min_val} & {max_val}.")
+            print("**************************************************\n")
+
+
+def print_screen(plr, com, game_over) -> None:
+    """Print both grids with symbols.
+
+    Args:
+        player and computer instances of the Battlegrid Class.
+        game_over: bool: is the game over True or False.
+
+    Returns:
+        None: prints to the terminal.
+    """
+    if game_over:
+        com.grid_symbols_game_over()
+        plr.grid_symbols_game_over()
+        com.print_grid()
+        plr.print_grid()
+        return
+    com.grid_symbols()
+    plr.grid_symbols()
+    com.print_grid()
+    plr.print_grid()
 
 
 def custom_settings():
@@ -219,7 +225,7 @@ def custom_settings():
     return player_grid, computer_grid
 
 
-def help_me():
+def help_me() -> None:
     """Prints helpful information for the player. Can
     be accessed by pressing 'H' in-game or '3' in the
     start-up menu."""
@@ -238,7 +244,7 @@ def help_me():
     print("**************************************************\n")
 
 
-def game_start_options():
+def game_start_options() -> int:
     """Greets the player at the start of the game
     and prompts them to make a game mode choice or
     see game mode details.
@@ -252,8 +258,8 @@ def game_start_options():
         "--Welcome to the kingdom of Boredome, where we play Btlshps!"
         )
     print("--Sink your opponent's ships before they sink yours!")
-    print("--To RESTART the game press 'R'.")
-    print("--For HELP press 'H'.\n")
+    print("--To RESTART the game press 'R'")
+    print("--For HELP press 'H'\n")
     while True:
         print("****************************************")
         print(">>>Option '1' for default game mode.")
@@ -273,7 +279,7 @@ def game_start_options():
             help_me()
 
 
-def game_log(plr, com):
+def game_log(plr, com) -> None:
     """Description for how a turn of guessing went, co-ordinates guessed
     by computer and player and the outcome of the guess, hit or miss.
 
@@ -295,7 +301,7 @@ def game_log(plr, com):
     print_screen(plr, com, False)
 
 
-def final_score(score_type, plr, com):
+def final_score(score_type, plr, com) -> None:
     """Prints the appropriate message and score at the end of a game
 
     Args:
@@ -334,8 +340,6 @@ def final_score(score_type, plr, com):
     print(f"-- Final Score is Computer: {com_hits}, Player: {plr_hits}")
     print("*********************************************************")
     print("Scroll up to see final board positions.")
-    print("Hit 'R' to play a new game!")
-    read_input(">>: \n", 0, 0, True)
 
 
 def win_conditions(plr, com) -> bool:
@@ -379,7 +383,7 @@ def win_conditions(plr, com) -> bool:
     return True
 
 
-def game_loop(plr, com):
+def game_loop(plr, com) -> None:
     """Run the game loop and print the boards.
 
     Args:
@@ -401,9 +405,17 @@ def game_loop(plr, com):
             new_turn = win_conditions(plr, com)
             if new_turn:
                 game_log(plr, com)
+            else:
+                read_input(
+                    "Start a NEW GAME? '1' for Yes/'2' for No: \n", 1, 2, True
+                )
+        else:
+            read_input(
+                    "Start a NEW GAME? '1' for Yes/'2' for No: \n", 1, 2, True
+            )
 
 
-def main():
+def main() -> None:
     """start the game and apply settings based on player
     choice. Generate ships on each board according to player
     choices. Initiate the game loop or return to game loop
